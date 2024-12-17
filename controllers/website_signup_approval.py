@@ -9,6 +9,9 @@ from odoo.addons.web.controllers.home import ensure_db, Home, \
     SIGN_UP_REQUEST_PARAMS, LOGIN_SUCCESSFUL_PARAMS
 
 _logger = logging.getLogger(__name__)
+
+
+_logger = logging.getLogger(__name__)
 LOGIN_SUCCESSFUL_PARAMS.add('account_created')
 
 
@@ -87,43 +90,71 @@ class AuthSignupHome(Home):
         return request.render("website_signup_approval.approval_form_success")
 
 
+
 class SignUpApproveController(http.Controller):
     """Manage Approval Request in Backend"""
+
     @http.route(['/web/signup/approve'], type='json', auth='public')
     def create_attachment(self, **dat):
         """Create approval request and attachment in backend"""
+
+        # Debugging: Log the incoming data
+        _logger.info("Received Data: %s", dat)
+
+        # Prepare the attachments list
         data_list = []
-        for data in dat['data']:
-            data = data.split('base64')[1] if data else False
-            data_list.append((0, 0, {'attachments': data}))
-        if request.env['res.users.approve'].sudo().search(
-                [('email', '=', dat['email'])]):
-            pass
-        else:
-            attach = request.env['res.users.approve'].sudo().create(
-                {'name': dat['username'],
-                 'email': dat['email'],
-                 'password': dat['password'],
-
-                 'first_name': dat.get('first_name'),
-                 'last_name': dat.get('last_name'),
-                 'birthday': dat.get('birthday'),
-                 'street': dat.get('street'),
-                 'city': dat.get('city'),
-                 'postal_code': dat.get('postal_code'),
-                 'phone': dat.get('phone'),
-                 'recommended_by': dat.get('recommended_by'),
-                 'gender': dat.get('gender'),
-                 'accept_terms': dat.get('accept_terms'),
-
-                 'attachment_ids': data_list
-                 })
+        if dat.get('data'):  # Ensure 'data' exists to avoid errors
             for data in dat['data']:
-                data = data.split('base64')[1] if data else False
-                request.env['ir.attachment'].sudo().create(
-                    {'name': attach.name,
-                     'datas': data,
-                     'res_model': 'res.users.approve',
-                     'res_id': attach.id,
-                     }
-                )
+                try:
+                    data = data.split('base64')[1] if 'base64' in data else False
+                    if data:
+                        data_list.append((0, 0, {'attachments': data}))
+                except Exception as e:
+                    _logger.error("Error processing attachment data: %s", e)
+
+        # Check if the email already exists
+        existing_user = request.env['res.users.approve'].sudo().search([('email', '=', dat.get('email'))])
+        if existing_user:
+            _logger.warning("Email %s already exists. Skipping creation.", dat.get('email'))
+            return {'error': 'Email already exists'}
+
+        try:
+            # Create the record in 'res.users.approve'
+            attach = request.env['res.users.approve'].sudo().create({
+                'name': f"{dat.get('first_name', '')} {dat.get('last_name', '')}".strip(),
+                'email': dat.get('email'),
+                'password': dat.get('password'),
+                'first_name': dat.get('first_name'),
+                'last_name': dat.get('last_name'),
+                'birthday': dat.get('birthday'),
+                'street': dat.get('street'),
+                'city': dat.get('city'),
+                'postal_code': dat.get('postal_code'),
+                'phone': dat.get('phone'),
+                'recommended_by': dat.get('recommended_by'),
+                'gender': dat.get('gender'),
+                'accept_terms': dat.get('accept_terms'),
+                'attachment_ids': data_list,
+            })
+
+            # Create ir.attachments related to the new record
+            for data in dat.get('data', []):
+                try:
+                    data = data.split('base64')[1] if 'base64' in data else False
+                    if data:
+                        request.env['ir.attachment'].sudo().create({
+                            'name': attach.name,
+                            'datas': data,
+                            'res_model': 'res.users.approve',
+                            'res_id': attach.id,
+                        })
+                except Exception as e:
+                    _logger.error("Error creating attachment: %s", e)
+
+            _logger.info("Approval request created successfully for: %s", dat.get('email'))
+            return {'success': 'Record created successfully'}
+
+        except Exception as e:
+            _logger.error("Error creating approval request: %s", e)
+            return {'error': 'Failed to create approval request. Please check logs.'}
+
