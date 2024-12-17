@@ -47,7 +47,6 @@
                             <field name="first_name" readonly="1"/>
                             <field name="last_name" readonly="1"/>
                             <field name="birthday" readonly="1"/>
-                            <field name="birthday" readonly="1"/>
                         </group>
                         <group>
                             <field name="email" readonly="1"/>

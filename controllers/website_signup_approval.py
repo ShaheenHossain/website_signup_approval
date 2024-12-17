@@ -104,6 +104,18 @@ class SignUpApproveController(http.Controller):
                 {'name': dat['username'],
                  'email': dat['email'],
                  'password': dat['password'],
+
+                 'first_name': dat.get('first_name'),
+                 'last_name': dat.get('last_name'),
+                 'birthday': dat.get('birthday'),
+                 'street': dat.get('street'),
+                 'city': dat.get('city'),
+                 'postal_code': dat.get('postal_code'),
+                 'phone': dat.get('phone'),
+                 'recommended_by': dat.get('recommended_by'),
+                 'gender': dat.get('gender'),
+                 'accept_terms': dat.get('accept_terms'),
+
                  'attachment_ids': data_list
                  })
             for data in dat['data']:
