@@ -299,15 +299,15 @@ class ResUsersApprove(models.Model):
             user.unlink()
 
 
-class ResPartner(models.Model):
-    _inherit = 'res.partner'
-
-    gender = fields.Selection([
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('other', 'Other'),
-    ], string="Gender")
-
-    birthday = fields.Date(string="Birthday")
-
-    recommended_by = fields.Char(string="Recommended By")
+# class ResPartner(models.Model):
+#     _inherit = 'res.partner'
+#
+#     gender = fields.Selection([
+#         ('male', 'Male'),
+#         ('female', 'Female'),
+#         ('other', 'Other'),
+#     ], string="Gender")
+#
+#     birthday = fields.Date(string="Birthday")
+#
+#     recommended_by = fields.Char(string="Recommended By")
