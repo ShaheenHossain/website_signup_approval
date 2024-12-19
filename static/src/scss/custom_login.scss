@@ -1,0 +1,23 @@
+@media (min-width: 992px) {
+  #wrapwrap.o_login_page {
+    background-color: #091627; /* Your desired dark background color */
+  }
+
+  #wrapwrap.o_login_page > main {
+    background-color: #091627;
+  }
+
+  #wrapwrap.o_login_page .oe_login_form,
+  #wrapwrap.o_login_page .oe_signup_form {
+    background-color: #FFFFFF; /* White form background */
+    border-radius: 8px;
+    padding: 2em;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  #wrapwrap.o_login_page label,
+  #wrapwrap.o_login_page h3,
+  #wrapwrap.o_login_page p {
+    color: white; /* White text color */
+  }
+}

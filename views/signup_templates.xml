@@ -5,16 +5,16 @@
 
         <xpath expr="//div[@class='mb-3 field-login']" position="before">
 
-            <div class="signup-header" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 150px;">
-                <h3>BECOME A MEMBER</h3>
-                <p>Application form</p>
+            <div class="signup-header" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 150px; color: white;">
+                <h3 style="color: white;">BECOME A MEMBER</h3>
+                <p style="color: white;">Application form</p>
             </div>
 
             <div class="form-group">
                 <label for="gender">Gender</label>
                 <select name="gender" id="gender" class="form-control" required="required">
-                    <option value="female">Female</option>
                     <option value="male">Male</option>
+                    <option value="female">Female</option>
                     <option value="other">Other</option>
                 </select>
             </div>
@@ -42,14 +42,25 @@
                 <label for="postal_code">Postal Code</label>
                 <input type="text" name="postal_code" id="postal_code" class="form-control" required="required"/>
             </div>
-            <div class="form-group">
+<!--            <div class="form-group">
                 <label for="country_id">Country</label>
                 <select name="country_id" id="country_id" class="form-control" required="required">
                     <t t-foreach="request.env['res.country'].sudo().search([])" t-as="country">
                         <option t-att-value="country.id" t-esc="country.name"/>
                     </t>
                 </select>
+            </div>-->
+            <div class="form-group">
+                <label for="country_id">Country</label>
+                <select name="country_id" id="country_id" class="form-control" required="required">
+                    <t t-foreach="request.env['res.country'].sudo().search([])" t-as="country">
+                        <option t-att-value="country.id"
+                                t-att-selected="'Switzerland' in country.name"
+                                t-esc="country.name"/>
+                    </t>
+                </select>
             </div>
+
             <div class="form-group">
                 <label for="phone">Phone Number</label>
                 <input type="text" name="phone" id="phone" class="form-control" required="required"/>
@@ -58,6 +69,25 @@
                 <label for="recommended_by">Recommended By</label>
                 <input type="text" name="recommended_by" id="recommended_by" class="form-control"/>
             </div>
+
+
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="accept_terms" id="accept_terms" required="required" />
+                    <label class="form-check-label" for="accept_terms" style="font-size: small; color: white;">
+                        I hereby apply for membership in the TIMEOUT Member Club and accept the general provisions of the membership regulations and the code of conduct.
+                    </label>
+                </div>
+                <div style="margin-top: 5px;">
+                    <a href="https://pos.timeout-memberclub.com/reglement-verhaltenskodex" target="_blank" style="color: white; text-decoration: underline;">
+                        Regulations / Code of Conduct
+                    </a>
+                </div>
+            </div>
+
+
+
+<!--
             <div class="form-group">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="accept_terms" id="accept_terms" required="required"/>
@@ -65,12 +95,9 @@
                         Accept Terms and Conditions
                     </label>
                 </div>
-            </div>
-
-
-
-
+            </div> -->
         </xpath>
+
 
         <xpath expr="//input[@name='confirm_password']" position="after">
             <t t-if="request.env['ir.config_parameter'].sudo().get_param('website_signup_approval.auth_signup_approval') == 'True'">
@@ -101,5 +128,28 @@
         </xpath>
 
     </template>
+
+<odoo>
+    <record id="auth_signup_change_link" model="ir.ui.view">
+        <field name="name">auth.signup.link.change</field>
+        <field name="model">ir.ui.view</field>
+        <field name="inherit_id" ref="auth_signup.login"/> <!-- Reference the correct template -->
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='justify-content-between mt-2 d-flex small']/a[contains(@t-attf-href, '/web/signup')]" position="replace">
+                <a t-if="signup_enabled" t-attf-href="/web/signup?{{ keep_query() }}">Membership Application Form</a>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+
+
+
+<!--    <template id="webclient_login" inherit_id="web.login_layout">
+        <xpath expr="//t[@t-call='web.frontend_layout']/t[last()]" position="after">
+            <t t-set="body_classname" t-value="'custom-login-background'"/>
+            <t t-set="login_card_classes" t-value="'rounded-0 shadow-sm custom-login-card'"/>
+        </xpath>
+    </template>-->
 
 </odoo>
