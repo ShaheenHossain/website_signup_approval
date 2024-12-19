@@ -13,7 +13,7 @@
     'data': [
         'security/website_signup_approval_groups.xml',
         'security/ir.model.access.csv',
-        'data/website_signup_approval_data.xml',
+        # 'data/website_signup_approval_data.xml',
         'views/res_users_approve_views.xml',
         'views/res_config_settings_views.xml',
         'views/signup_templates.xml',

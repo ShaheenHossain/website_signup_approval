@@ -36,66 +36,67 @@
         </field>
     </record>
 <!--    Res users approve model form view-->
-    <record id="res_user_approve_view_form" model="ir.ui.view">
-        <field name="name">res.users.approve.view.form</field>
-        <field name="model">res.users.approve</field>
-        <field name="mode">primary</field>
-        <field name="arch" type="xml">
-            <form string="Form">
-                <header>
-                    <button name="action_approve_login" type="object"
-                            invisible="hide_button == True"
-                            class="oe_highlight" string="Approve Login"/>
-                    <button name="action_reject_login" type="object"
-                            invisible="hide_button == True"
-                            class="oe_highlight" string="Reject Login"/>
-                </header>
-                <sheet>
-                    <widget name="web_ribbon" title="APPROVED"
-                            bg_color="bg-success"
-                            invisible="for_approval_menu == False"/>
-                    <group>
-                        <group>
-                            <field name="for_approval_menu" invisible="1"/>
-                            <field name="hide_button" invisible="1"/>
-                        </group>
-                        <group>
-                            <field name="name" readonly="1"/>
-                            <field name="gender" readonly="1"/>
-                            <field name="first_name" readonly="1"/>
-                            <field name="last_name" readonly="1"/>
-                            <field name="birthday" readonly="1"/>
-                        </group>
-                        <group>
-                            <field name="email" readonly="1"/>
-                            <field name="street" readonly="1"/>
-                            <field name="city" readonly="1"/>
-                            <field name="postal_code" readonly="1"/>
-                            <field name="country_id" readonly="1"/>
-                            <field name="phone" readonly="1"/>
-                            <field name="recommended_by" readonly="1"/>
-                            <field name="accept_terms" readonly="1"/>
-                        </group>
-                        <group>
-                            <field name="password" readonly="1"/>
-                        </group>
+<record id="res_user_approve_view_form" model="ir.ui.view">
+    <field name="name">res.users.approve.view.form</field>
+    <field name="model">res.users.approve</field>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <form string="Approval Request Form">
+            <header>
+                <button name="action_approve_login" type="object"
+                        invisible="hide_button == True"
+                        class="oe_highlight" string="Approve Login"/>
+                <button name="action_reject_login" type="object"
+                        invisible="hide_button == True"
+                        class="oe_highlight" string="Reject Login"/>
+            </header>
+            <sheet>
+                <widget name="web_ribbon" title="APPROVED"
+                        bg_color="bg-success"
+                        invisible="for_approval_menu == False"/>
+                <group>
+                    <!-- Hidden Fields -->
+                    <field name="for_approval_menu" invisible="1"/>
+                    <field name="hide_button" invisible="1"/>
+                </group>
+                <group>
+                    <group string="Personal Details" col="2">
+                        <field name="first_name" readonly="1"/>
+                        <field name="last_name" readonly="1"/>
+                        <field name="name" readonly="1"/>
+                        <field name="gender" readonly="1"/>
+                        <field name="birthday" readonly="1"/>
+
+                        <field name="email" readonly="1"/>
+                        <field name="phone" readonly="1"/>
+                        <field name="street" readonly="1"/>
+                        <field name="city" readonly="1"/>
+                        <field name="postal_code" readonly="1"/>
+                        <field name="country_id" readonly="1"/>
                     </group>
-                    <notebook>
-                        <page string='Documents'>
-                            <field name="attachment_ids" readonly="1">
-                                <tree>
-                                    <field name="attachments"
-                                           options="{'no_quick_create': True,'size': [600, 600]}"
-                                           widget="image"
-                                           class="oe_avatar"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
+                    <group string="Additional Information" col="2">
+                        <field name="recommended_by" readonly="1"/>
+                        <field name="accept_terms" readonly="1"/>
+                        <field name="password" readonly="1"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Documents">
+                        <field name="attachment_ids" readonly="1">
+                            <tree>
+                                <field name="attachments"
+                                       options="{'no_quick_create': True, 'size': [300, 300]}"
+                                       widget="image"
+                                       class="oe_avatar"/>
+
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
 <!--    Res users approve action-->
     <record id="res_users_approve_action" model="ir.actions.act_window">
         <field name="name">Portal Approval</field>

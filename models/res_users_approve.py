@@ -215,6 +215,17 @@ class ResUsersApprove(models.Model):
                 'groups_id': [(4, self.env.ref('base.group_portal').id)],
             })
 
+            # Update associated partner with email and phone
+            partner = user.partner_id
+            partner.sudo().write({
+                'email': self.email,
+                'phone': self.phone,
+                'street': self.street,
+                'city': self.city,
+                'zip': self.postal_code,
+                'country_id': self.country_id.id,
+            })
+
             # Send notification email to the new user
             template = self.env.ref(
                 'auth_signup.mail_template_user_signup_account_created',
@@ -288,15 +299,16 @@ class ResUsersApprove(models.Model):
             user.unlink()
 
 
-# class ResPartner(models.Model):
-#     _inherit = 'res.partner'
-#
-#     gender = fields.Selection([
-#         ('male', 'Male'),
-#         ('female', 'Female'),
-#         ('other', 'Other'),
-#     ], string="Gender")
-#
-#     birthday = fields.Date(string="Birthday")
-#
-#     recommended_by = fields.Char(string="Recommended By")
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    gender = fields.Selection([
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other'),
+    ], string="Gender")
+
+    birthday = fields.Date(string="Birthday")
+
+    recommended_by = fields.Char(string="Recommended By")
+
