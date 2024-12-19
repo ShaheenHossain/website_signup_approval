@@ -215,17 +215,6 @@ class ResUsersApprove(models.Model):
                 'groups_id': [(4, self.env.ref('base.group_portal').id)],
             })
 
-            # Update associated partner with email and phone
-            partner = user.partner_id
-            partner.sudo().write({
-                'email': self.email,
-                'phone': self.phone,
-                'street': self.street,
-                'city': self.city,
-                'zip': self.postal_code,
-                'country_id': self.country_id.id,
-            })
-
             # Send notification email to the new user
             template = self.env.ref(
                 'auth_signup.mail_template_user_signup_account_created',
