@@ -129,18 +129,20 @@
 
     </template>
 
-<odoo>
+
+<!--
     <record id="auth_signup_change_link" model="ir.ui.view">
         <field name="name">auth.signup.link.change</field>
         <field name="model">ir.ui.view</field>
-        <field name="inherit_id" ref="auth_signup.login"/> <!-- Reference the correct template -->
+        <field name="inherit_id" ref="auth_signup.login"/> &lt;!&ndash; Reference the correct template &ndash;&gt;
         <field name="arch" type="xml">
             <xpath expr="//div[@class='justify-content-between mt-2 d-flex small']/a[contains(@t-attf-href, '/web/signup')]" position="replace">
                 <a t-if="signup_enabled" t-attf-href="/web/signup?{{ keep_query() }}">Membership Application Form</a>
             </xpath>
         </field>
     </record>
-</odoo>
+-->
+
 
 
 
