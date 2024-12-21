@@ -70,7 +70,6 @@
                 <input type="text" name="recommended_by" id="recommended_by" class="form-control"/>
             </div>
 
-
             <div class="form-group">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="accept_terms" id="accept_terms" required="required" />
@@ -87,15 +86,6 @@
 
 
 
-<!--
-            <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="accept_terms" id="accept_terms" required="required"/>
-                    <label class="form-check-label" for="accept_terms">
-                        Accept Terms and Conditions
-                    </label>
-                </div>
-            </div> -->
         </xpath>
 
 
@@ -127,31 +117,14 @@
             </t>
         </xpath>
 
+
+
     </template>
 
 
-<!--
-    <record id="auth_signup_change_link" model="ir.ui.view">
-        <field name="name">auth.signup.link.change</field>
-        <field name="model">ir.ui.view</field>
-        <field name="inherit_id" ref="auth_signup.login"/> &lt;!&ndash; Reference the correct template &ndash;&gt;
-        <field name="arch" type="xml">
-            <xpath expr="//div[@class='justify-content-between mt-2 d-flex small']/a[contains(@t-attf-href, '/web/signup')]" position="replace">
-                <a t-if="signup_enabled" t-attf-href="/web/signup?{{ keep_query() }}">Membership Application Form</a>
-            </xpath>
-        </field>
-    </record>
--->
 
 
 
 
-
-<!--    <template id="webclient_login" inherit_id="web.login_layout">
-        <xpath expr="//t[@t-call='web.frontend_layout']/t[last()]" position="after">
-            <t t-set="body_classname" t-value="'custom-login-background'"/>
-            <t t-set="login_card_classes" t-value="'rounded-0 shadow-sm custom-login-card'"/>
-        </xpath>
-    </template>-->
 
 </odoo>

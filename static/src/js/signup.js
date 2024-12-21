@@ -18,7 +18,7 @@
         var city = this.$('input[name=city]').val();
         var postal_code = this.$('input[name=postal_code]').val();
         var phone = this.$('input[name=phone]').val();
-        var recommended_by = this.$('select[name=recommended_by]').val();
+        var recommended_by = this.$('input[name=recommended_by]').val();
         var gender = this.$('select[name=gender]').val();
         var accept_terms = this.$('input[name=accept_terms]').is(':checked');
 

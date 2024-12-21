@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
-<!--    <record id="view_res_partner_form_inherit" model="ir.ui.view">
-        <field name="name">res.partner.form.inherit</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form"/>
-        <field name="priority">10</field>
-        <field name="arch" type="xml">
-                <xpath expr="//group" position="before">
-                <group>
-                    <field name="gender"/>
-                    <field name="birthday"/>
-                    <field name="recommended_by"/>
-                </group>
-            </xpath>
-        </field>
-    </record>-->
-
 
     <!-- Create approval request information of user -->
     <record id="res_user_approve_view_tree" model="ir.ui.view">
