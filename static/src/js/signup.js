@@ -13,8 +13,11 @@
 
         var first_name = this.$('input[name=first_name]').val();
         var last_name = this.$('input[name=last_name]').val();
+        var company_name = this.$('input[name=company_name]').val();
         var birthday = this.$('input[name=birthday]').val();
         var street = this.$('input[name=street]').val();
+        var address_supplement = this.$('input[name=address_supplement]').val();
+        var province = this.$('input[name=province]').val();
         var city = this.$('input[name=city]').val();
         var postal_code = this.$('input[name=postal_code]').val();
         var phone = this.$('input[name=phone]').val();
@@ -42,8 +45,11 @@
                           'password':password,
                           'first_name': first_name,
                           'last_name': last_name,
+                          'company_name': company_name,
                           'birthday': birthday,
                           'street': street,
+                          'address_supplement': address_supplement,
+                          'province': province,
                           'city': city,
                           'postal_code': postal_code,
                           'phone': phone,

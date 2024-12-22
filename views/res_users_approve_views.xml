@@ -48,12 +48,15 @@
                         <field name="first_name" readonly="1"/>
                         <field name="last_name" readonly="1"/>
                         <field name="name" readonly="1"/>
+                        <field name="company_name" readonly="1"/>
                         <field name="gender" readonly="1"/>
                         <field name="birthday" readonly="1"/>
 
                         <field name="email" readonly="1"/>
                         <field name="phone" readonly="1"/>
                         <field name="street" readonly="1"/>
+                        <field name="address_supplement" readonly="1"/>
+                        <field name="province" readonly="1"/>
                         <field name="city" readonly="1"/>
                         <field name="postal_code" readonly="1"/>
                         <field name="country_id" readonly="1"/>

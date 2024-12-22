@@ -14,6 +14,7 @@ class ResUsersApprove(models.Model):
     last_name = fields.Char(string='Last Name')
     name = fields.Char(string='Full Name', compute='_compute_full_name', store=True)
 
+    company_name = fields.Char(help="Company", string="Company")
     email = fields.Char(help="Email of the user", string="Email")
     password = fields.Char(help="Password of the user", string="Password")
 
@@ -25,6 +26,8 @@ class ResUsersApprove(models.Model):
 
     birthday = fields.Date(string='Birthday')
     street = fields.Char(string='Street and House Number')
+    address_supplement = fields.Char(string='Address Supplement')
+    province = fields.Char(string='Canton / Province / Region')
     city = fields.Char(string='City')
     postal_code = fields.Char(string='Postal Code')
     country_id = fields.Many2one(
@@ -50,6 +53,26 @@ class ResUsersApprove(models.Model):
                                  default=False,
                                  help="Check the button is used or not")
 
+    recommended_by_email = fields.Char(string='Recommended By (Email)')
+    recommended_by_phone = fields.Char(string='Recommended By (Phone)')
+
+    @api.constrains('recommended_by_email', 'recommended_by_phone')
+    def _check_recommendation(self):
+        for rec in self:
+            if not rec.recommended_by_email and not rec.recommended_by_phone:
+                raise ValidationError(_("Please provide either an email or phone number for the recommender."))
+
+            if rec.recommended_by_email:
+                user = self.env['res.users'].search([('email', '=', rec.recommended_by_email)], limit=1)
+                if not user:
+                    raise ValidationError(
+                        _("The provided email does not match any existing user. Please verify the email."))
+
+            if rec.recommended_by_phone:
+                user = self.env['res.users'].search([('phone', '=', rec.recommended_by_phone)], limit=1)
+                if not user:
+                    raise ValidationError(
+                        _("The provided phone number does not match any existing user. Please verify the phone number."))
 
     def _compute_full_name(self):
         for rec in self:
@@ -153,3 +176,4 @@ class ResUsersApprove(models.Model):
         user = self.env['res.users'].sudo().search([('login', '=', self.email)])
         if user:
             user.unlink()
+
