@@ -27,13 +27,18 @@
     <field name="arch" type="xml">
         <form string="Approval Request Form">
             <header>
-                <button name="action_approve_login" type="object"
-                        invisible="hide_button == True"
-                        class="oe_highlight" string="Approve Login"/>
-                <button name="action_reject_login" type="object"
-                        invisible="hide_button == True"
-                        class="oe_highlight" string="Reject Login"/>
+                <button name="action_approve_login" type="object" invisible="hide_button == True" class="oe_highlight" string="Approve Login"/>
+                <button name="action_reject_login" type="object" invisible="hide_button == True" class="oe_highlight" string="Reject Login"/>
+
+<!--                this three button use for separately action to reduce the time to process-->
+<!--
+                <button name="action_approve_user" string="Approve User" type="object" class="btn-primary"/>
+                <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-secondary"/>
+                <button name="action_send_invoice_email" string="Send Invoice" type="object" class="btn-secondary"/>
+-->
+
             </header>
+
             <sheet>
                 <widget name="web_ribbon" title="APPROVED"
                         bg_color="bg-success"

@@ -1,0 +1,493 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_signup_approval
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e-20240701\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-24 17:55+0000\n"
+"PO-Revision-Date: 2024-12-24 19:10+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.5\n"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid ""
+"<select name=\"gender\" id=\"gender\" class=\"form-control\" "
+"required=\"required\">\n"
+"                    <option value=\"male\">Male</option>\n"
+"                    <option value=\"female\">Female</option>\n"
+"                    <option value=\"other\">Other</option>\n"
+"                </select>"
+msgstr ""
+"<select name=\"gender\" id=\"gender\" class=\"form-control\" "
+"required=\"required\">\n"
+"                    <option value=\"male\">Männlich</option>\n"
+"                    <option value=\"female\">Weiblich</option>\n"
+"                    <option value=\"other\">Andere</option>\n"
+"                </select>"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.res_user_approve_view_form
+msgid "APPROVED"
+msgstr "GENEHMIGT"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__accept_terms
+msgid "Accept Terms and Conditions"
+msgstr "Allgemeine Geschäftsbedingungen akzeptieren"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.res_user_approve_view_form
+msgid "Additional Information"
+msgstr "Weitere Informationen"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__address_supplement
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Address Supplement"
+msgstr "Adresszusatz"
+
+#. module: website_signup_approval
+#. odoo-python
+#: code:addons/website_signup_approval/controllers/website_signup_approval.py:0
+#, python-format
+msgid "Another user is already registered using this email address."
+msgstr "Für diese E-Mail-Adresse existiert bereits ein Konto."
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Application form"
+msgstr "Anmeldeformular"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_user_approval_window__approval_id
+msgid "Approval ID"
+msgstr "Member-ID"
+
+#. module: website_signup_approval
+#: model:ir.model,name:website_signup_approval.model_res_users_approve
+#: model:ir.model,name:website_signup_approval.model_signup_approval
+msgid "Approval Request Details"
+msgstr "Details zum Genehmigungsantrag"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.res_user_approve_view_form
+msgid "Approval Request Form"
+msgstr "Formular für Genehmigungsanträge"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_res_users_approve__approved_date
+#: model:ir.model.fields,help:website_signup_approval.field_signup_approval__approved_date
+msgid "Approval date of signup request"
+msgstr "Genehmigungsdatum des Anmeldeantrags"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.res_user_approve_view_form
+msgid "Approve Login"
+msgstr "Anmeldung genehmigen"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__approved_date
+#: model:ir.model.fields,field_description:website_signup_approval.field_signup_approval__approved_date
+msgid "Approved Date"
+msgstr "Genehmigtes Datum"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_document_attachment__document
+#: model:ir.ui.menu,name:website_signup_approval.document_attachment_menu
+msgid "Attachment"
+msgstr "Anhang"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.res_config_settings_view_form
+msgid "Attachment Data"
+msgstr "Anhänge Daten"
+
+#. module: website_signup_approval
+#: model:ir.model,name:website_signup_approval.model_user_approval_window
+msgid "Attachment Details in User Approval Window"
+msgstr "Anlagendetails im Fenster Benutzergenehmigung"
+
+#. module: website_signup_approval
+#: model:ir.actions.act_window,name:website_signup_approval.document_attachment_action
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__attachment_ids
+#: model:ir.model.fields,field_description:website_signup_approval.field_user_approval_window__attachments
+msgid "Attachments"
+msgstr "Anhänge"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "BECOME A MEMBER"
+msgstr "MITGLIED WERDEN"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__birthday
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Birthday"
+msgstr "Geburtstag"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__province
+msgid "Canton / Province / Region"
+msgstr "Kanton/Provinz/Region"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Canton/Province/Region"
+msgstr "Kanton/Provinz/Region"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_res_users_approve__hide_button
+msgid "Check the button is used or not"
+msgstr "Prüfen Sie, ob die Schaltfläche verwendet wird oder nicht"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_res_users_approve__for_approval_menu
+#: model:ir.model.fields,help:website_signup_approval.field_signup_approval__for_approval_menu
+msgid "Check the request is approved"
+msgstr "Prüfen Sie, ob der Antrag genehmigt ist"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__city
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "City"
+msgstr "Ort"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__company_name
+#: model:ir.model.fields,help:website_signup_approval.field_res_users_approve__company_name
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Company"
+msgstr "Unternehmen"
+
+#. module: website_signup_approval
+#: model:ir.model,name:website_signup_approval.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfiguration"
+
+#. module: website_signup_approval
+#. odoo-python
+#: code:addons/website_signup_approval/controllers/website_signup_approval.py:0
+#, python-format
+msgid "Could not create a new account."
+msgstr "Es konnte kein neues Konto errichtet werden."
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__country_id
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Country"
+msgstr "Land"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_document_attachment__create_uid
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__create_uid
+#: model:ir.model.fields,field_description:website_signup_approval.field_signup_approval__create_uid
+#: model:ir.model.fields,field_description:website_signup_approval.field_user_approval_window__create_uid
+msgid "Created by"
+msgstr "Erstellt von"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_document_attachment__create_date
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__create_date
+#: model:ir.model.fields,field_description:website_signup_approval.field_signup_approval__create_date
+#: model:ir.model.fields,field_description:website_signup_approval.field_user_approval_window__create_date
+msgid "Created on"
+msgstr "Erstellt am"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_document_attachment__display_name
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__display_name
+#: model:ir.model.fields,field_description:website_signup_approval.field_signup_approval__display_name
+#: model:ir.model.fields,field_description:website_signup_approval.field_user_approval_window__display_name
+msgid "Display Name"
+msgstr "Anzeigename"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_config_settings__documents_ids
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.res_user_approve_view_form
+msgid "Documents"
+msgstr "Dokumente"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__email
+#: model:ir.model.fields,field_description:website_signup_approval.field_signup_approval__login
+msgid "Email"
+msgstr "E-Mail"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_res_users_approve__email
+msgid "Email of the user"
+msgstr "E-Mail des Benutzers"
+
+#. module: website_signup_approval
+#: model:ir.model.fields.selection,name:website_signup_approval.selection__res_users_approve__gender__female
+msgid "Female"
+msgstr "Weiblich"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__first_name
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "First Name"
+msgstr "Vorname"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__for_approval_menu
+#: model:ir.model.fields,field_description:website_signup_approval.field_signup_approval__for_approval_menu
+msgid "For Approval Menu"
+msgstr "Menü zur Genehmigung"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__hide_button
+msgid "For hide button"
+msgstr "Für die Schaltfläche \"Ausblenden"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__name
+msgid "Full Name"
+msgstr "Vor- und Nachname"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__gender
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Gender"
+msgstr "Geschlecht"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid ""
+"I hereby apply for membership in the TIMEOUT Member Club and accept the "
+"general provisions of the membership regulations and the code of conduct."
+msgstr ""
+"Ich beantrage hiermit die Mitgliedschaft im TIMEOUT Member Club und "
+"akzeptiere die allgemeinen Bestimmungen der Mitgliedschaftsordnung und "
+"des Verhaltenskodex."
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_document_attachment__id
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__id
+#: model:ir.model.fields,field_description:website_signup_approval.field_signup_approval__id
+#: model:ir.model.fields,field_description:website_signup_approval.field_user_approval_window__id
+msgid "ID"
+msgstr ""
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_document_attachment__document
+msgid "It identify the type of user document"
+msgstr "Es identifiziert den Typ des Benutzerdokuments"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__last_name
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Last Name"
+msgstr "Nachname"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_document_attachment__write_uid
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__write_uid
+#: model:ir.model.fields,field_description:website_signup_approval.field_signup_approval__write_uid
+#: model:ir.model.fields,field_description:website_signup_approval.field_user_approval_window__write_uid
+msgid "Last Updated by"
+msgstr "Zuletzt aktualisiert von"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_document_attachment__write_date
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__write_date
+#: model:ir.model.fields,field_description:website_signup_approval.field_signup_approval__write_date
+#: model:ir.model.fields,field_description:website_signup_approval.field_user_approval_window__write_date
+msgid "Last Updated on"
+msgstr "Zuletzt geändert am"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_signup_approval__login
+msgid "Login details of user"
+msgstr "Anmeldedaten des Benutzers"
+
+#. module: website_signup_approval
+#: model:ir.model.fields.selection,name:website_signup_approval.selection__res_users_approve__gender__male
+msgid "Male"
+msgstr "Männlich"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_signup_approval__name
+msgid "Name"
+msgstr "Name"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_signup_approval__name
+msgid "Name of the user"
+msgstr "Name des Benutzers"
+
+#. module: website_signup_approval
+#: model:ir.model.fields.selection,name:website_signup_approval.selection__res_users_approve__gender__other
+msgid "Other"
+msgstr "Sonstiges"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__password
+msgid "Password"
+msgstr "Passwort"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_res_users_approve__password
+msgid "Password of the user"
+msgstr "Passwort des Benutzers"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.res_user_approve_view_form
+msgid "Personal Details"
+msgstr "Persönliche Details"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__phone
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Phone Number"
+msgstr "Telefonnummer"
+
+#. module: website_signup_approval
+#. odoo-python
+#: code:addons/website_signup_approval/models/res_users_approve.py:0
+#, python-format
+msgid "Please provide either an email or phone number for the recommender."
+msgstr ""
+"Bitte geben Sie entweder eine E-Mail-Adresse oder eine Telefonnummer für "
+"den Empfehlungsgeber an."
+
+#. module: website_signup_approval
+#: model:ir.actions.act_window,name:website_signup_approval.res_users_approve_action
+#: model:ir.ui.menu,name:website_signup_approval.res_users_approve_menu
+msgid "Portal Approval"
+msgstr "Member-Anträge"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__postal_code
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Postal Code"
+msgstr "Postleitahl"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__recommended_by
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Recommended By"
+msgstr "Empfohlen von"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__recommended_by_email
+msgid "Recommended By (Email)"
+msgstr "Empfohlen von (E-Mail)"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__recommended_by_phone
+msgid "Recommended By (Phone)"
+msgstr "Empfohlen von (Telefon)"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Regulations / Code of Conduct"
+msgstr "Vorschriften/Verhaltenskodex"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.res_user_approve_view_form
+msgid "Reject Login"
+msgstr "Antrag ablehnen"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_res_config_settings__documents_ids
+msgid "Select the type of document"
+msgstr "Wählen Sie die Art des Dokuments"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_config_settings__auth_signup_approval
+msgid "Signup Approval"
+msgstr "Genehmigung des Antrags"
+
+#. module: website_signup_approval
+#: model:res.groups,name:website_signup_approval.website_signup_approval_group_approval_user
+msgid "Signup Approval User"
+msgstr "Anmeldung Freigabe Benutzer"
+
+#. module: website_signup_approval
+#: model:ir.model,name:website_signup_approval.model_document_attachment
+msgid "Signup Attachments"
+msgstr "Anmeldungen Anhänge"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_user_approval_window__approval_id
+msgid "Signup information's of user"
+msgstr "Anmeldeinformationen des Benutzers"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_res_config_settings__auth_signup_approval
+msgid "Signup request send only if it is enabled"
+msgstr "Anmeldungsanfrage nur senden, wenn sie aktiviert ist"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_user_approval_window__attachments
+msgid "Store the uploaded document"
+msgstr "Das hochgeladene Dokument speichern"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,help:website_signup_approval.field_res_users_approve__attachment_ids
+msgid "Store uploaded document"
+msgstr "Hochgeladenes Dokument speichern"
+
+#. module: website_signup_approval
+#: model:ir.model.fields,field_description:website_signup_approval.field_res_users_approve__street
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "Street and House Number"
+msgstr "Straße und Hausnummer"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.approval_form_success
+msgid ""
+"Thank you, We get your signup request, we will\n"
+"                            contact you shortly.."
+msgstr ""
+"Vielen Dank, wir haben Ihre Anmeldeanfrage erhalten und werden\n"
+"                            sie in Kürze kontaktieren."
+
+#. module: website_signup_approval
+#. odoo-python
+#: code:addons/website_signup_approval/models/res_users_approve.py:0
+#, python-format
+msgid ""
+"The provided email does not match any existing user. Please verify the "
+"email."
+msgstr ""
+"Die angegebene E-Mail stimmt nicht mit einem bestehenden Benutzer "
+"überein. Bitte überprüfen Sie die E-Mail."
+
+#. module: website_signup_approval
+#. odoo-python
+#: code:addons/website_signup_approval/models/res_users_approve.py:0
+#, python-format
+msgid ""
+"The provided phone number does not match any existing user. Please verify "
+"the phone number."
+msgstr ""
+"Die angegebene Telefonnummer stimmt mit keinem bestehenden Benutzer "
+"überein. Bitte überprüfen Sie die Rufnummer."
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "User Name"
+msgstr "Benutzername"
+
+#. module: website_signup_approval
+#. odoo-python
+#: code:addons/website_signup_approval/controllers/website_signup_approval.py:0
+#, python-format
+msgid "You can login only after your login get approved..!"
+msgstr "Sie können sich erst anmelden, wenn Ihr Antrag genehmigt wurde!"
+
+#. module: website_signup_approval
+#: model_terms:ir.ui.view,arch_db:website_signup_approval.document_fields
+msgid "e.g. User Name"
+msgstr "z.B. Benutzer Name"

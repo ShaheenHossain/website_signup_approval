@@ -177,3 +177,67 @@ class ResUsersApprove(models.Model):
         if user:
             user.unlink()
 
+
+# three action to reduce the time for process
+
+# def action_approve_user(self):
+#     self.for_approval_menu = True
+#     self.hide_button = True
+#     user = self.env['res.users'].sudo().search([('login', '=', self.email)])
+#     if not user:
+#         user = self.env['res.users'].sudo().create({
+#             'login': self.email,
+#             'name': self.name,
+#             'password': self.password,
+#             'groups_id': [(4, self.env.ref('base.group_portal').id)],
+#         })
+#         partner = user.partner_id
+#         partner.sudo().write({
+#             'email': self.email,
+#             'phone': self.phone,
+#             'street': self.street,
+#             'city': self.city,
+#             'zip': self.postal_code,
+#             'country_id': self.country_id.id,
+#         })
+#     return True
+#
+# def action_create_invoice(self):
+#     user = self.env['res.users'].sudo().search([('login', '=', self.email)])
+#     if not user:
+#         raise ValueError("User not found. Please approve the user first.")
+#     product_joining_fee = self.env['product.product'].search([('name', '=', 'Joining Fee')], limit=1)
+#     product_service_charge = self.env['product.product'].search([('name', '=', 'Service Charge')], limit=1)
+#     product_membership_fee = self.env['product.product'].search([('name', '=', '12 Month Membership Fee')], limit=1)
+#     if not product_joining_fee or not product_service_charge or not product_membership_fee:
+#         raise ValueError("Required products are missing.")
+#     invoice_vals = {
+#         'move_type': 'out_invoice',
+#         'partner_id': user.partner_id.id,
+#         'invoice_date': fields.Date.today(),
+#         'invoice_line_ids': [
+#             (0, 0, {'product_id': product_joining_fee.id, 'quantity': 1, 'price_unit': 25.0}),
+#             (0, 0, {'product_id': product_service_charge.id, 'quantity': 1, 'price_unit': 175.0}),
+#             (0, 0, {'product_id': product_membership_fee.id, 'quantity': 1, 'price_unit': 300.0}),
+#         ],
+#     }
+#     invoice = self.env['account.move'].sudo().create(invoice_vals)
+#     return {
+#         'type': 'ir.actions.act_window',
+#         'name': 'Invoice',
+#         'res_model': 'account.move',
+#         'view_mode': 'form',
+#         'res_id': invoice.id,
+#         'target': 'current',
+#     }
+#
+#
+# def action_send_invoice_email(self):
+#     invoice = self.env['account.move'].search([('partner_id', '=', self.env['res.partner'].sudo().search([('email', '=', self.email)]).id)], limit=1)
+#     if not invoice:
+#         raise ValueError("Invoice not found.")
+#     invoice.sudo().action_post()
+#     template = self.env.ref('account.email_template_edi_invoice', raise_if_not_found=False)
+#     if template:
+#         template.sudo().send_mail(invoice.id, force_send=True)
+#     return True
