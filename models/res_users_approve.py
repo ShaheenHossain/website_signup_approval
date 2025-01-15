@@ -79,95 +79,6 @@ class ResUsersApprove(models.Model):
             rec.name = f"{rec.first_name or ''} {rec.last_name or ''}".strip()
 
 
-    def action_approve_login(self):
-        """To approve the request from website and generate invoice"""
-        self.for_approval_menu = True
-        self.hide_button = True
-
-        # Approve User Login
-        user = self.env['res.users'].sudo().search([('login', '=', self.email)])
-        if not user:
-            user = self.env['res.users'].sudo().create({
-                'login': self.email,
-                'name': self.name,
-                'password': self.password,
-                'groups_id': [(4, self.env.ref('base.group_portal').id)],
-            })
-
-            # Update associated partner with email and phone
-            partner = user.partner_id
-            partner.sudo().write({
-                'email': self.email,
-                'phone': self.phone,
-                'street': self.street,
-                'city': self.city,
-                'zip': self.postal_code,
-                'country_id': self.country_id.id,
-            })
-
-            # Send notification email to the new user
-            template = self.env.ref(
-                'auth_signup.mail_template_user_signup_account_created',
-                raise_if_not_found=False)
-            email_values = {'email_to': user.login}
-            template.send_mail(user.id, email_values=email_values, force_send=True)
-
-        # Define Service Products
-        product_joining_fee = self.env['product.product'].search([('name', '=', 'Joining Fee')], limit=1)
-        product_service_charge = self.env['product.product'].search([('name', '=', 'Service Charge')], limit=1)
-        product_membership_fee = self.env['product.product'].search([('name', '=', '12 Month Membership Fee')], limit=1)
-
-        # Debugging Logs
-        if not product_joining_fee:
-            _logger.error("Product 'Joining Fee' is not defined in the database.")
-        if not product_service_charge:
-            _logger.error("Product 'Service Charge' is not defined in the database.")
-        if not product_membership_fee:
-            _logger.error("Product '12 Month Membership Fee' is not defined in the database.")
-
-        if not product_joining_fee or not product_service_charge or not product_membership_fee:
-            raise ValueError("One or more required service products are not defined. Please ensure all products exist.")
-
-        # Create Invoice
-        invoice_vals = {
-            'move_type': 'out_invoice',  # Customer Invoice
-            'partner_id': user.partner_id.id,
-            'invoice_date': fields.Date.today(),
-            'invoice_line_ids': [
-                (0, 0, {
-                    'product_id': product_joining_fee.id,
-                    'quantity': 1,
-                    'price_unit': 25.0,
-                }),
-                (0, 0, {
-                    'product_id': product_service_charge.id,
-                    'quantity': 1,
-                    'price_unit': 175.0,
-                }),
-                (0, 0, {
-                    'product_id': product_membership_fee.id,
-                    'quantity': 1,
-                    'price_unit': 300.0,
-                }),
-            ],
-        }
-        invoice = self.env['account.move'].sudo().create(invoice_vals)
-
-        # Send Invoice via Email
-        invoice.sudo().action_post()  # Post the invoice
-        template = self.env.ref('account.email_template_edi_invoice', raise_if_not_found=False)
-        if template:
-            template.sudo().send_mail(invoice.id, force_send=True)
-
-        # Redirect to Invoice Form View
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Invoice',
-            'res_model': 'account.move',
-            'view_mode': 'form',
-            'res_id': invoice.id,
-            'target': 'current',
-        }
 
     def action_reject_login(self):
         """To reject the request from website"""
@@ -241,3 +152,165 @@ class ResUsersApprove(models.Model):
 #     if template:
 #         template.sudo().send_mail(invoice.id, force_send=True)
 #     return True
+
+##perfectly work but i need to reduce the process time to remove send email it may reduct the time
+
+    # def action_approve_login(self):
+    #     """To approve the request from website and generate invoice"""
+    #     self.for_approval_menu = True
+    #     self.hide_button = True
+    #
+    #     # Approve User Login
+    #     user = self.env['res.users'].sudo().search([('login', '=', self.email)])
+    #     if not user:
+    #         user = self.env['res.users'].sudo().create({
+    #             'login': self.email,
+    #             'name': self.name,
+    #             'password': self.password,
+    #             'groups_id': [(4, self.env.ref('base.group_portal').id)],
+    #         })
+    #
+    #         # Update associated partner with email and phone
+    #         partner = user.partner_id
+    #         partner.sudo().write({
+    #             'email': self.email,
+    #             'phone': self.phone,
+    #             'street': self.street,
+    #             'city': self.city,
+    #             'zip': self.postal_code,
+    #             'country_id': self.country_id.id,
+    #         })
+    #
+    #         # Send notification email to the new user
+    #         template = self.env.ref(
+    #             'auth_signup.mail_template_user_signup_account_created',
+    #             raise_if_not_found=False)
+    #         email_values = {'email_to': user.login}
+    #         template.send_mail(user.id, email_values=email_values, force_send=True)
+    #
+    #     # Define Service Products
+    #     product_joining_fee = self.env['product.product'].search([('name', '=', 'Joining Fee')], limit=1)
+    #     product_service_charge = self.env['product.product'].search([('name', '=', 'Service Charge')], limit=1)
+    #     product_membership_fee = self.env['product.product'].search([('name', '=', '12 Month Membership Fee')], limit=1)
+    #
+    #     # Debugging Logs
+    #     if not product_joining_fee:
+    #         _logger.error("Product 'Joining Fee' is not defined in the database.")
+    #     if not product_service_charge:
+    #         _logger.error("Product 'Service Charge' is not defined in the database.")
+    #     if not product_membership_fee:
+    #         _logger.error("Product '12 Month Membership Fee' is not defined in the database.")
+    #
+    #     if not product_joining_fee or not product_service_charge or not product_membership_fee:
+    #         raise ValueError("One or more required service products are not defined. Please ensure all products exist.")
+    #
+    #     # Create Invoice
+    #     invoice_vals = {
+    #         'move_type': 'out_invoice',  # Customer Invoice
+    #         'partner_id': user.partner_id.id,
+    #         'invoice_date': fields.Date.today(),
+    #         'invoice_line_ids': [
+    #             (0, 0, {
+    #                 'product_id': product_joining_fee.id,
+    #                 'quantity': 1,
+    #                 'price_unit': 25.0,
+    #             }),
+    #             (0, 0, {
+    #                 'product_id': product_service_charge.id,
+    #                 'quantity': 1,
+    #                 'price_unit': 175.0,
+    #             }),
+    #             (0, 0, {
+    #                 'product_id': product_membership_fee.id,
+    #                 'quantity': 1,
+    #                 'price_unit': 300.0,
+    #             }),
+    #         ],
+    #     }
+    #     invoice = self.env['account.move'].sudo().create(invoice_vals)
+    #
+    #     # Send Invoice via Email
+    #     invoice.sudo().action_post()  # Post the invoice
+    #     template = self.env.ref('account.email_template_edi_invoice', raise_if_not_found=False)
+    #     if template:
+    #         template.sudo().send_mail(invoice.id, force_send=True)
+    #
+    #     # Redirect to Invoice Form View
+    #     return {
+    #         'type': 'ir.actions.act_window',
+    #         'name': 'Invoice',
+    #         'res_model': 'account.move',
+    #         'view_mode': 'form',
+    #         'res_id': invoice.id,
+    #         'target': 'current',
+    #     }
+
+    def action_approve_login(self):
+        """To approve the request from website and generate invoice without sending it."""
+        self.for_approval_menu = True
+        self.hide_button = True
+
+        # Approve User Login
+        user = self.env['res.users'].sudo().search([('login', '=', self.email)])
+        if not user:
+            user = self.env['res.users'].sudo().create({
+                'login': self.email,
+                'name': self.name,
+                'password': self.password,
+                'groups_id': [(4, self.env.ref('base.group_portal').id)],
+            })
+
+            # Update associated partner with email and phone
+            partner = user.partner_id
+            partner.sudo().write({
+                'email': self.email,
+                'phone': self.phone,
+                'street': self.street,
+                'city': self.city,
+                'zip': self.postal_code,
+                'country_id': self.country_id.id,
+            })
+
+        # Define Default Product Names and Prices
+        products_data = [
+            {'name': 'Admission Fee', 'price': 250.0},
+            {'name': 'Membership Fee', 'price': 1750.0},
+            {'name': 'Consumption Prepayment', 'price': 1000.0},
+        ]
+
+        invoice_lines = []
+        for product_data in products_data:
+            product = self.env['product.product'].search([('name', '=', product_data['name'])], limit=1)
+            if not product:
+                # Create product dynamically if it doesn't exist
+                product = self.env['product.product'].sudo().create({
+                    'name': product_data['name'],
+                    'type': 'service',
+                    'list_price': product_data['price'],  # Set default price
+                })
+
+            # Prepare invoice line
+            invoice_lines.append((0, 0, {
+                'product_id': product.id,
+                'quantity': 1,
+                'price_unit': product_data['price'],  # Use dynamic price
+            }))
+
+        # Create Invoice without posting or sending
+        invoice_vals = {
+            'move_type': 'out_invoice',  # Customer Invoice
+            'partner_id': user.partner_id.id,
+            'invoice_date': fields.Date.today(),
+            'invoice_line_ids': invoice_lines,
+        }
+        invoice = self.env['account.move'].sudo().create(invoice_vals)
+
+        # Redirect to Invoice Form View
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Invoice',
+            'res_model': 'account.move',
+            'view_mode': 'form',
+            'res_id': invoice.id,
+            'target': 'current',
+        }
