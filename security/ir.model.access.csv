@@ -7,3 +7,4 @@ access_res_users_approve_user,access.res.users.approve.user,website_signup_appro
 access_res_users_approve_public,access.res.users.approve.portal,website_signup_approval.model_res_users_approve,base.group_public,1,1,0,1
 access_res_users_approve_portal,access.res.users.approve.public,website_signup_approval.model_res_users_approve,base.group_portal,1,1,0,1
 access_document_attachment_user,access.document.attachment.user,website_signup_approval.model_document_attachment,base.group_user,1,1,1,1
+access_signup_notification,access.signup.notification,website_signup_approval.model_signup_notification,base.group_user,1,1,1,1

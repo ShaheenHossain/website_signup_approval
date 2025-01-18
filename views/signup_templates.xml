@@ -105,8 +105,6 @@
                 </div>
             </div>
 
-
-
         </xpath>
 
 
@@ -138,7 +136,6 @@
             </t>
         </xpath>
 
-
         <xpath expr="//input[@name='name']" position="attributes">
             <attribute name="placeholder">e.g. User Name</attribute>
         </xpath>
@@ -147,9 +144,100 @@
             <label for="name">User Name</label>
         </xpath>
 
-
     </template>
 
+
+<!--
+<record id="mail_template_signup_notification" model="mail.template">
+    <field name="name">User Approval Notification</field>
+    <field name="model_id" ref="model_res_users_approve"/>
+    <field name="subject">Approval Request for ${object.name}</field>
+    <field name="email_from">${(user.email or '')|safe}</field>
+    <field name="email_to">${(object.email or '')|safe}</field>
+    <field name="body_html">
+        <![CDATA[
+        <p>Dear Administrator,</p>
+        <p>A new approval request has been submitted:</p>
+        <ul>
+            <li><strong>Name:</strong> ${object.name}</li>
+            <li><strong>Email:</strong> ${object.email}</li>
+            <li><strong>Company Name:</strong> ${object.company_name}</li>
+            <li><strong>Phone:</strong> ${object.phone}</li>
+            &lt;!&ndash; Add more fields as necessary &ndash;&gt;
+        </ul>
+        <p>Please log in to Odoo to approve or reject this request.</p>
+        <p>Best regards,<br/>Your Odoo System</p>
+        ]]>
+    </field>
+</record>
+-->
+
+
+
+
+    <record id="mail_template_signup_notification" model="mail.template">
+        <field name="name">Signup Notification</field>
+        <field name="model_id" ref="base.model_res_users"/>
+<!--        <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>-->
+        <field name="subject">New User Signup</field>
+        <field name="email_to">${(email_to or '')|safe}</field>
+                <field name="body_html">
+                    <![CDATA[
+                    <p>Hello,</p>
+                    <p>A new user has signed up please check on Portal Approval:</p>
+<!--                    <ul>
+                        <li>Name: ${object.name}</li>
+                        <li>Email: ${object.email}</li>
+                    </ul>-->
+                ]]>
+                </field>
+    </record>
+
+<!--
+        <field name="body_html" type="html">
+            <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #FFFFFF; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse:separate;">
+                    <tbody>
+                        &lt;!&ndash; HEADER &ndash;&gt;
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                    <tr><td valign="middle">
+                                        <span style="font-size: 10px;">Welcome to </span><br/>
+                                        <span style="font-size: 20px; font-weight: bold;">
+                                            <t t-out="object.name or ''">Marc Demo</t>
+                                        </span>
+                                    </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td></tr>
+            </table>
+        </field>
+-->
+
+
+<!--
+    <record id="mail_template_signup_notification" model="mail.template">
+        <field name="name">Signup Notification</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="subject">New User Signup</field>
+        <field name="email_to">${(email_to or '')|safe}</field>
+        <field name="body_html">
+            <![CDATA[
+            <p>Hello,</p>
+            <p>A new user has signed up:</p>
+            <ul>
+                <li>Name: ${object.name}</li>
+                <li>Email: ${object.email}</li>
+            </ul>
+        ]]>
+        </field>
+    </record>
+-->
 
 
 

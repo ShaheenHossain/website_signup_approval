@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
-
     <!-- Create approval request information of user -->
     <record id="res_user_approve_view_tree" model="ir.ui.view">
         <field name="name">res.users.approve.view.tree</field>
@@ -9,16 +7,18 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
-                <field name="email"/>
-                <field name="password"/>
-                <field name="gender"/>
-                <field name="first_name"/>
-                <field name="last_name"/>
-                <field name="phone"/>
+                <field name="customer_id" optional="show"/>
+                <field name="name" optional="show"/>
+                <field name="email" optional="show"/>
+                <field name="password" optional="show"/>
+                <field name="gender" optional="show"/>
+                <field name="first_name" optional="show"/>
+                <field name="last_name" optional="show"/>
+                <field name="phone" optional="show"/>
             </tree>
         </field>
     </record>
+
 <!--    Res users approve model form view-->
 <record id="res_user_approve_view_form" model="ir.ui.view">
     <field name="name">res.users.approve.view.form</field>
@@ -50,6 +50,14 @@
                 </group>
                 <group>
                     <group string="Personal Details" col="2">
+
+                        <field name="customer_id" readonly="1">
+                            <attribute name="modifiers">{'invisible': [('customer_id', '=', False)]}</attribute>
+                        </field>
+
+<!--                        <field name="customer_id" readonly="1" attrs="{'invisible': [('customer_id', '=', False)]}"/>-->
+<!--                        <field name="customer_id" readonly="1" attrs="{'invisible': [('customer_id', '=', False)]}"/>-->
+<!--                        <field name="customer_id" readonly="1"/>-->
                         <field name="first_name" readonly="1"/>
                         <field name="last_name" readonly="1"/>
                         <field name="name" readonly="1"/>
@@ -89,6 +97,35 @@
         </form>
     </field>
 </record>
+
+    <record id="view_signup_notification_form" model="ir.ui.view">
+        <field name="name">signup.notification.form</field>
+        <field name="model">signup.notification</field>
+        <field name="arch" type="xml">
+            <form string="Signup Notification">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="email"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_signup_notification_tree" model="ir.ui.view">
+        <field name="name">signup.notification.tree</field>
+        <field name="model">signup.notification</field>
+        <field name="arch" type="xml">
+            <tree string="Signup Notifications">
+                <field name="name"/>
+                <field name="email"/>
+            </tree>
+        </field>
+    </record>
+
+
+
 <!--    Res users approve action-->
     <record id="res_users_approve_action" model="ir.actions.act_window">
         <field name="name">Portal Approval</field>
@@ -97,7 +134,24 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="res_user_approve_view_tree"/>
     </record>
+
+
+    <record id="action_signup_notification" model="ir.actions.act_window">
+        <field name="name">Signup Notifications</field>
+        <field name="res_model">signup.notification</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+
 <!--    Res users approve menu-->
     <menuitem id="res_users_approve_menu" parent="base.menu_users"
               action="res_users_approve_action"/>
+
+
+    <menuitem id="menu_signup_notification"
+              name="Signup Notifications"
+              parent="base.menu_users"
+              sequence="10"
+              action="action_signup_notification"/>
 </odoo>

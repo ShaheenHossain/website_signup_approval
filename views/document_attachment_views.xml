@@ -32,4 +32,7 @@
     <menuitem id="document_attachment_menu" name="Attachment"
               parent="sale.menu_sales_config"
               action="document_attachment_action"/>
+
+
+
 </odoo>

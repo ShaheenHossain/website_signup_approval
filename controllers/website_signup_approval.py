@@ -11,7 +11,6 @@ from odoo.addons.web.controllers.home import ensure_db, Home, \
 _logger = logging.getLogger(__name__)
 
 
-_logger = logging.getLogger(__name__)
 LOGIN_SUCCESSFUL_PARAMS.add('account_created')
 
 
@@ -81,14 +80,57 @@ class AuthSignupHome(Home):
         response = request.render('auth_signup.signup', qcontext)
         response.headers['X-Frame-Options'] = 'SAMEORIGIN'
         response.headers['Content-Security-Policy'] = "frame-ancestors 'self'"
+
+        # Fetch email from system parameters
+        notification_emails = request.env['signup.notification'].sudo().search([]).mapped('email')
+
+        # Ensure notification_emails is a comma-separated string
+        notification_emails_str = ','.join(notification_emails)
+
+        template = request.env.ref(
+            'website_signup_approval.mail_template_signup_notification',
+            raise_if_not_found=False
+        )
+
+        if template and notification_emails_str:
+            template.sudo().send_mail(
+                request.env.user.id,
+                email_values={'email_to': notification_emails_str},
+                force_send=True
+            )
+
+
+        # notification_email = request.env['ir.config_parameter'].sudo().get_param(
+        #     'website_signup_notification.email', default='rapidgrps@gmail.com'
+        # )
+        #
+        # # notification_emails = request.env['signup.notification'].sudo().search([]).mapped('email')
+        # # for email in notification_emails:
+        # #     if email:
+        # #         template.sudo().send_mail(
+        # #             request.env.user.id,
+        # #             email_values={'email_to': email},
+        # #             force_send=True
+        # #         )
+        #
+        # template = request.env.ref('website_signup_approval.mail_template_signup_notification',
+        #                            raise_if_not_found=False)
+        # if template and notification_email:
+        #     template.sudo().send_mail(
+        #         request.env.user.id,
+        #         email_values={'email_to': notification_email},
+        #         force_send=True
+        #     )
+        # Fetch email from system parameters
+
         return response
+
 
     @http.route('/success', type='http', auth='public', website=True,
                 sitemap=False)
     def approval_success(self):
         """Create approval request success form"""
         return request.render("website_signup_approval.approval_form_success")
-
 
 
 class SignUpApproveController(http.Controller):
@@ -160,4 +202,3 @@ class SignUpApproveController(http.Controller):
         except Exception as e:
             _logger.error("Error creating approval request: %s", e)
             return {'error': 'Failed to create approval request. Please check logs.'}
-

@@ -15,4 +15,25 @@
             </div>
         </t>
     </template>
+
+    <record id="seq_customer_approval_id" model="ir.sequence">
+        <field name="name">Member Approval ID</field>
+        <field name="code">res.users.approve.id</field>
+        <field name="prefix">TM</field>
+        <field name="padding">4</field>
+    </record>
+
+<!--
+    <record id="view_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="readonly">True</attribute>
+            </xpath>
+        </field>
+    </record>-->
+
+
 </odoo>

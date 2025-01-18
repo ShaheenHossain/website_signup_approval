@@ -23,6 +23,7 @@
     'assets': {
         'web.assets_frontend': [
             'website_signup_approval/static/src/js/signup.js'
+            # 'website_signup_approval/static/src/js/new_signup_notification.js'
             # 'website_signup_approval/static/src/scss/custom_login.scss'
         ],
     },
