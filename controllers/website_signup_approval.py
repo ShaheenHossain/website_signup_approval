@@ -202,3 +202,51 @@ class SignUpApproveController(http.Controller):
         except Exception as e:
             _logger.error("Error creating approval request: %s", e)
             return {'error': 'Failed to create approval request. Please check logs.'}
+
+#
+# from odoo import http, _
+# from odoo.http import request
+# from odoo.addons.auth_signup.controllers.main import AuthSignupHome
+# from odoo.exceptions import UserError
+#
+# class CustomAuthSignupHome(AuthSignupHome):
+#
+#     @http.route('/web/reset_password', type='http', auth='public', website=True, csrf=False)
+#     def web_auth_reset_password(self, *args, **kw):
+#         qcontext = self.get_auth_signup_qcontext()
+#
+#         # Password Reset via Token
+#         if 'token' in qcontext and not qcontext.get('invalid_token'):
+#             if request.httprequest.method == 'POST':
+#                 password = kw.get('password')
+#                 confirm_password = kw.get('confirm_password')
+#
+#                 if not password or not confirm_password:
+#                     qcontext['error'] = _("Password fields cannot be empty.")
+#                     return request.render('auth_signup.reset_password', qcontext)
+#
+#                 if password != confirm_password:
+#                     qcontext['error'] = _("Passwords do not match.")
+#                     return request.render('auth_signup.reset_password', qcontext)
+#
+#                 user = request.env['res.users'].sudo().search([('login', '=', qcontext.get('login'))], limit=1)
+#                 if user:
+#                     user.sudo().write({'password': password})
+#                     return request.redirect('/web/login')
+#                 else:
+#                     qcontext['error'] = _("Invalid user.")
+#
+#         # Request Reset (Email Submission)
+#         if request.httprequest.method == 'POST' and not qcontext.get('token'):
+#             login = kw.get('login')
+#             user = request.env['res.users'].sudo().search([('login', '=', login)], limit=1)
+#             if user:
+#                 try:
+#                     user.sudo().signup_send_password_reset_email()
+#                     qcontext['message'] = _("A password reset link has been sent to your email.")
+#                 except Exception as e:
+#                     qcontext['error'] = _("Error sending email: ") + str(e)
+#             else:
+#                 qcontext['error'] = _("User not found.")
+#
+#         return request.render('auth_signup.reset_password', qcontext)

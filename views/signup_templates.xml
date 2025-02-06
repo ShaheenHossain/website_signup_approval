@@ -5,110 +5,116 @@
 
         <xpath expr="//div[@class='mb-3 field-login']" position="before">
 
-            <div class="signup-header" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 150px; color: white;">
-                <h3 style="color: white;">BECOME A MEMBER</h3>
-                <p style="color: white;">Application form</p>
-            </div>
+            <t t-if="not only_passwords">
 
-            <div class="form-group">
-                <label for="gender">Gender</label>
-                <select name="gender" id="gender" class="form-control" required="required">
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="first_name">First Name</label>
-                <input type="text" name="first_name" id="first_name" class="form-control" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="last_name">Last Name</label>
-                <input type="text" name="last_name" id="last_name" class="form-control" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="company_name">Company</label>
-                <input type="text" name="company_name" id="company_name" class="form-control" required="required"/>
-            </div>
-
-            <div class="form-group">
-                <label for="birthday">Birthday</label>
-                <input type="date" name="birthday" id="birthday" class="form-control" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="street">Street and House Number</label>
-                <input type="text" name="street" id="street" class="form-control" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="address_supplement">Address Supplement</label>
-                <input type="text" name="address_supplement" id="address_supplement" class="form-control"/>
-            </div>
-            <div class="form-group">
-                <label for="province">Canton/Province/Region</label>
-                <input type="text" name="province" id="province" class="form-control" required="required"/>
-            </div>
-
-            <div class="form-group">
-                <label for="city">City</label>
-                <input type="text" name="city" id="city" class="form-control" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="postal_code">Postal Code</label>
-                <input type="text" name="postal_code" id="postal_code" class="form-control" required="required"/>
-            </div>
-
-<!--
-            <div class="form-group">
-                <label for="country_id">Country</label>
-                <select name="country_id" id="country_id" class="form-control" required="required">
-                    <t t-foreach="request.env['res.country'].sudo().search([])" t-as="country">
-                        <option t-att-value="country.id"
-                                t-att-selected="country.id == 43"
-                                t-esc="country.name"/>
-                    </t>
-                </select>
-            </div>
--->
-
-            <div class="form-group">
-                <label for="country_id">Country</label>
-                <select name="country_id" id="country_id" class="form-control" required="required">
-                    <t t-foreach="request.env['res.country'].sudo().search([])" t-as="country">
-                        <option t-att-value="country.id"
-                                t-att-selected="country.id == request.env.ref('base.ch').id"
-                                t-esc="country.name"/>
-                    </t>
-                </select>
-            </div>
-
-
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="text" name="phone" id="phone" class="form-control" required="required"/>
-            </div>
-            <div class="form-group">
-                <label for="recommended_by">Recommended By</label>
-                <input type="text" name="recommended_by" id="recommended_by" class="form-control"/>
-            </div>
-
-            <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="accept_terms" id="accept_terms" required="required" />
-                    <label class="form-check-label" for="accept_terms" style="font-size: small; color: white;">
-                        I hereby apply for membership in the TIMEOUT Member Club and accept the general provisions of the membership regulations and the code of conduct.
-                    </label>
+                <div class="signup-header" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 150px; color: white;">
+                    <h3 style="color: white;">BECOME A MEMBER</h3>
+                    <p style="color: white;">Application form</p>
                 </div>
-                <div style="margin-top: 5px;">
-                    <a href="https://pos.timeout-memberclub.com/reglement-verhaltenskodex" target="_blank" style="color: white; text-decoration: underline;">
-                        Regulations / Code of Conduct
-                    </a>
-                </div>
-            </div>
 
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select name="gender" id="gender" class="form-control" required="required">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name" id="first_name" class="form-control" required="required"/>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name" id="last_name" class="form-control" required="required"/>
+                </div>
+                <div class="form-group">
+                    <label for="company_name">Company</label>
+                    <input type="text" name="company_name" id="company_name" class="form-control" required="required"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthday">Birthday</label>
+                    <input type="date" name="birthday" id="birthday" class="form-control" required="required"/>
+                </div>
+                <div class="form-group">
+                    <label for="street">Street and House Number</label>
+                    <input type="text" name="street" id="street" class="form-control" required="required"/>
+                </div>
+                <div class="form-group">
+                    <label for="address_supplement">Address Supplement</label>
+                    <input type="text" name="address_supplement" id="address_supplement" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="province">Canton/Province/Region</label>
+                    <input type="text" name="province" id="province" class="form-control" required="required"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" name="city" id="city" class="form-control" required="required"/>
+                </div>
+                <div class="form-group">
+                    <label for="postal_code">Postal Code</label>
+                    <input type="text" name="postal_code" id="postal_code" class="form-control" required="required"/>
+                </div>
+
+                <!--
+                            <div class="form-group">
+                                <label for="country_id">Country</label>
+                                <select name="country_id" id="country_id" class="form-control" required="required">
+                                    <t t-foreach="request.env['res.country'].sudo().search([])" t-as="country">
+                                        <option t-att-value="country.id"
+                                                t-att-selected="country.id == 43"
+                                                t-esc="country.name"/>
+                                    </t>
+                                </select>
+                            </div>
+                -->
+
+                <div class="form-group">
+                    <label for="country_id">Country</label>
+                    <select name="country_id" id="country_id" class="form-control" required="required">
+                        <t t-foreach="request.env['res.country'].sudo().search([])" t-as="country">
+                            <option t-att-value="country.id"
+                                    t-att-selected="country.id == request.env.ref('base.ch').id"
+                                    t-esc="country.name"/>
+                        </t>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" name="phone" id="phone" class="form-control" required="required"/>
+                </div>
+                <div class="form-group">
+                    <label for="recommended_by">Recommended By</label>
+                    <input type="text" name="recommended_by" id="recommended_by" class="form-control"/>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="accept_terms" id="accept_terms" required="required" />
+                        <label class="form-check-label" for="accept_terms" style="font-size: small; color: white;">
+                            I hereby apply for membership in the TIMEOUT Member Club and accept the general provisions of the membership regulations and the code of conduct.
+                        </label>
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <a href="https://pos.timeout-memberclub.com/reglement-verhaltenskodex" target="_blank" style="color: white; text-decoration: underline;">
+                            Regulations / Code of Conduct
+                        </a>
+                    </div>
+                </div>
+
+            </t>
         </xpath>
 
 
         <xpath expr="//input[@name='confirm_password']" position="after">
+
+            <t t-if="not only_passwords">
+
             <t t-if="request.env['ir.config_parameter'].sudo().get_param('website_signup_approval.auth_signup_approval') == 'True'">
                 <t t-set="get_attachments_set"
                    t-value="request.env['ir.config_parameter'].sudo().get_param('website_signup_approval.documents_ids')"/>
@@ -134,6 +140,8 @@
                     </t>
                 </t>
             </t>
+
+            </t>
         </xpath>
 
         <xpath expr="//input[@name='name']" position="attributes">
@@ -143,6 +151,7 @@
         <xpath expr="//label[@for='name']" position="replace">
             <label for="name">User Name</label>
         </xpath>
+
 
     </template>
 
