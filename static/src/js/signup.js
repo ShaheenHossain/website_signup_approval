@@ -1,16 +1,16 @@
 /** @odoo-module **/
-    import publicWidget from "@web/legacy/js/public/public_widget";
-    import { jsonrpc } from "@web/core/network/rpc_service";
-    var MySignUpForm = publicWidget.registry.SignUpForm.extend({
-        _onSubmit: function (el) {
-        /**
-        *Override onSubmit function for sending approval request
-        */
-        var file = this.$('.get_attach');
+import publicWidget from "@web/legacy/js/public/public_widget";
+import { jsonrpc } from "@web/core/network/rpc_service";
+
+var MySignUpForm = publicWidget.registry.SignUpForm.extend({
+    _onSubmit: function (el) {
+        el.preventDefault();  // Prevent default form submission
+
+        var self = this;
+        var files = this.$('.get_attach')[0]?.files || [];
         var email = this.$('input[name=login]').val();
         var username = this.$('input[name=name]').val();
         var password = this.$('input[name=password]').val();
-
         var first_name = this.$('input[name=first_name]').val();
         var last_name = this.$('input[name=last_name]').val();
         var company_name = this.$('input[name=company_name]').val();
@@ -25,43 +25,84 @@
         var gender = this.$('select[name=gender]').val();
         var accept_terms = this.$('input[name=accept_terms]').is(':checked');
 
-        //Get signup information's from user
-        const data_array = []
-        var count=0;
-        for (var doc = 0; doc < file.length; doc++) {
-              var SelectedFile = new FileReader();
-              var data = SelectedFile.readAsDataURL(file[doc].files[0]);
-              SelectedFile.addEventListener('load', (e) => {
-                 count++;
-                 const data = e.target.result;
-                 data_array.push(data)
-                 if (count===(file.length)){
-                 //Pass parameters to the route
-                      const route = jsonrpc("/web/signup/approve",
-                      {
-                          'data':data_array,
-                          'email':email,
-                          'username':username,
-                          'password':password,
-                          'first_name': first_name,
-                          'last_name': last_name,
-                          'company_name': company_name,
-                          'birthday': birthday,
-                          'street': street,
-                          'address_supplement': address_supplement,
-                          'province': province,
-                          'city': city,
-                          'postal_code': postal_code,
-                          'phone': phone,
-                          'recommended_by': recommended_by,
-                          'gender': gender,
-                          'accept_terms': accept_terms,
-                      }
-                      )
-                 }
-              });
+        var data_array = [];
+        var promises = [];
+
+        // Remove any previous success or error messages
+        this.$('.signup-message').remove();
+
+        // Process file uploads asynchronously
+        if (files.length > 0) {
+            for (let i = 0; i < files.length; i++) {
+                promises.push(
+                    new Promise((resolve, reject) => {
+                        var reader = new FileReader();
+                        reader.onload = (e) => {
+                            data_array.push(e.target.result);
+                            resolve();
+                        };
+                        reader.onerror = reject;
+                        reader.readAsDataURL(files[i]);
+                    })
+                );
             }
-        },
-    });
-    publicWidget.registry.MySignUpForm = MySignUpForm;
-    return MySignUpForm;
+        }
+
+        // Show loading spinner
+        this.$el.addClass('o_submitting');
+
+        // After all files are processed, send data
+        Promise.all(promises)
+            .then(() => {
+                return jsonrpc("/web/signup/approve", {
+                    'data': data_array,
+                    'email': email,
+                    'username': username,
+                    'password': password,
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'company_name': company_name,
+                    'birthday': birthday,
+                    'street': street,
+                    'address_supplement': address_supplement,
+                    'province': province,
+                    'city': city,
+                    'postal_code': postal_code,
+                    'phone': phone,
+                    'recommended_by': recommended_by,
+                    'gender': gender,
+                    'accept_terms': accept_terms,
+                });
+            })
+            .then((result) => {
+                console.log("Sign-up request sent successfully!", result);
+
+                // Remove loading spinner
+                self.$el.removeClass('o_submitting');
+
+                // Show success message
+                self.$el.append('<p class="signup-message text-success">Signup request sent successfully!</p>');
+
+                // Ensure message is visible
+                $('.signup-message').fadeIn().delay(3000).fadeOut();
+
+                // Optionally redirect after success
+                setTimeout(() => {
+                    window.location.href = "/web/login";  // Redirect to login page
+                }, 3000);
+            })
+            .catch((error) => {
+                console.error("Error uploading files or submitting form:", error);
+
+                // Remove loading spinner
+                self.$el.removeClass('o_submitting');
+
+                // Show error message
+                self.$el.append('<p class="signup-message text-danger">Signup failed. Please try again.</p>');
+                $('.signup-message').fadeIn().delay(5000).fadeOut();
+            });
+    },
+});
+
+publicWidget.registry.MySignUpForm = MySignUpForm;
+export default MySignUpForm;
