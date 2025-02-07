@@ -57,6 +57,8 @@ class ResUsersApprove(models.Model):
                                  default=False,
                                  help="Check the button is used or not")
 
+    # image = fields.Image(string='Profile Image')
+
     recommended_by_email = fields.Char(string='Recommended By (Email)')
     recommended_by_phone = fields.Char(string='Recommended By (Phone)')
 
@@ -145,9 +147,13 @@ class ResUsersApprove(models.Model):
                 'groups_id': [(4, self.env.ref('base.group_portal').id)],
             })
 
-            # Update associated partner with email and phone
-            partner = user.partner_id
-            partner.sudo().write({
+        # Fetch the first attachment (assuming it's the profile image)
+        attachment = self.attachment_ids[:1]  # Get the first attachment
+
+        if attachment:
+            # Set the attachment as the user's profile image
+            user.partner_id.sudo().write({
+                'image_1920': attachment.attachments,  # Set as profile image
                 'email': self.email,
                 'phone': self.phone,
                 'street': self.street,
@@ -155,6 +161,17 @@ class ResUsersApprove(models.Model):
                 'zip': self.postal_code,
                 'country_id': self.country_id.id,
             })
+
+            # # Update associated partner with email and phone
+            # partner = user.partner_id
+            # partner.sudo().write({
+            #     'email': self.email,
+            #     'phone': self.phone,
+            #     'street': self.street,
+            #     'city': self.city,
+            #     'zip': self.postal_code,
+            #     'country_id': self.country_id.id,
+            # })
 
         # Define Default Product Names and Prices
         products_data = [

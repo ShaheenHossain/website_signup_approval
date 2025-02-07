@@ -43,6 +43,8 @@
                 <widget name="web_ribbon" title="APPROVED"
                         bg_color="bg-success"
                         invisible="for_approval_menu == False"/>
+
+
                 <group>
                     <!-- Hidden Fields -->
                     <field name="for_approval_menu" invisible="1"/>
