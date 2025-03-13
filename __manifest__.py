@@ -9,7 +9,7 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'website': 'https://www.cybrosys.com',
     'category': 'Website',
-    'depends': ['website_sale'],
+    'depends': ['base', 'website', 'website_sale', 'web'],
     'data': [
         'security/website_signup_approval_groups.xml',
         'security/ir.model.access.csv',
@@ -27,7 +27,12 @@
             # 'website_signup_approval/static/src/js/new_signup_notification.js'
             # 'website_signup_approval/static/src/scss/custom_login.scss'
         ],
+        'web.assets_backend': [
+            # 'website_signup_approval/static/src/js/password_toggle.js'
+        ],
     },
+
+
     'images': ['static/description/banner.jpg'],
     'license': 'LGPL-3',
     'installable': True,

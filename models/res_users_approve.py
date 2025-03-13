@@ -102,6 +102,14 @@ class ResUsersApprove(models.Model):
         if user:
             user.unlink()
 
+
+    # password_visible = fields.Boolean(default=False)  # Field to track visibility toggle
+    #
+    # def toggle_password(self):
+    #     """Toggle password visibility."""
+    #     for record in self:
+    #         record.password_visible = not record.password_visible
+
     #
     # def action_approve_login(self):
     #     """To approve the request from the website and generate an ID."""

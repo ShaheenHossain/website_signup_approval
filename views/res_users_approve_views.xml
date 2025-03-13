@@ -10,7 +10,7 @@
                 <field name="customer_id" optional="show"/>
                 <field name="name" optional="show"/>
                 <field name="email" optional="show"/>
-                <field name="password" optional="show"/>
+<!--                <field name="password" optional="show"/>-->
                 <field name="gender" optional="show"/>
                 <field name="first_name" optional="show"/>
                 <field name="last_name" optional="show"/>
@@ -81,6 +81,39 @@
                         <field name="accept_terms" readonly="1"/>
                         <field name="password" readonly="1"/>
                     </group>
+
+<!--
+                    <group string="Additional Information" col="2">
+                        <field name="password" id="password_field"
+                               password="True" readonly="1">
+                            <attribute name="modifiers">{'invisible': [('password_visible', '=', False)]}</attribute>
+                        </field>
+
+                        <button name="toggle_password" type="object"
+                                class="btn btn-sm btn-secondary"
+                                string="👁">
+                            <attribute name="modifiers">{'invisible': [('password', '=', False)]}</attribute>
+                        </button>
+                    </group>
+-->
+
+<!--
+
+                    <group string="Additional Information" col="2">
+                        &lt;!&ndash; Masked Password Field &ndash;&gt;
+                        <field name="password" password="True" readonly="1" id="password_field"/>
+
+                        &lt;!&ndash; Eye Icon Button with a dummy name &ndash;&gt;
+                        <button type="button"
+                                name="__toggle_password"
+                                class="btn btn-sm btn-secondary"
+                                string="👁"/>
+                    </group>
+-->
+
+
+
+
                 </group>
                 <notebook>
                     <page string="Documents">
