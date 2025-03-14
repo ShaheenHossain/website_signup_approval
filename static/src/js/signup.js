@@ -130,7 +130,8 @@ var MySignUpForm = publicWidget.registry.SignUpForm.extend({
         var warningMessage = this.$('.file-warning-message');
 
         if (warningMessage.length === 0) {
-            this.$el.append('<p class="file-warning-message text-danger" style="display: none;">You should upload an image (JPG or PNG). Other formats are not supported.</p>');
+            this.$el.append('<p class="file-warning-message text-danger" style="display: none;">Sie sollten ein Bild (JPG oder PNG) hochladen. Andere Formate werden nicht unterstützt.</p>');
+//            this.$el.append('<p class="file-warning-message text-danger" style="display: none;">You should upload an image (JPG or PNG). Other formats are not supported.</p>');
             warningMessage = this.$('.file-warning-message');
         }
 
