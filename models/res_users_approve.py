@@ -12,6 +12,14 @@ class ResUsersApprove(models.Model):
 
     # customer_id = fields.Char(string="Member ID", readonly=True, copy=False)
 
+    def check_document_attachment(self):
+        """Check if document.attachment with ID 1 exists."""
+        document_attachment = self.env['document.attachment'].browse(1)
+        if document_attachment.exists():
+            _logger.info("Using document attachment: %s", document_attachment.name)
+        else:
+            _logger.warning("Document Attachment with ID 1 does not exist.")
+
     customer_id = fields.Many2one('res.partner', string="Customer")
 
     first_name = fields.Char(string='First Name')
@@ -62,14 +70,7 @@ class ResUsersApprove(models.Model):
     recommended_by_email = fields.Char(string='Recommended By (Email)')
     recommended_by_phone = fields.Char(string='Recommended By (Phone)')
 
-    # @api.model
-    # def create(self, vals):
-    #     # Generate the customer ID from the sequence
-    #     if 'member_id' not in vals or not vals['member_id']:
-    #         vals['member_id'] = self.env['ir.sequence'].next_by_code('res.users.approve.id') or _('New')
-    #     return super(ResUsersApprove, self).create(vals)
-
-
+    notification_sent = fields.Boolean(string='Notification Sent', default=False)
 
     @api.constrains('recommended_by_email', 'recommended_by_phone')
     def _check_recommendation(self):
@@ -93,7 +94,6 @@ class ResUsersApprove(models.Model):
         for rec in self:
             rec.name = f"{rec.first_name or ''} {rec.last_name or ''}".strip()
 
-
     def action_reject_login(self):
         """To reject the request from website"""
         self.for_approval_menu = False
@@ -101,44 +101,6 @@ class ResUsersApprove(models.Model):
         user = self.env['res.users'].sudo().search([('login', '=', self.email)])
         if user:
             user.unlink()
-
-
-    # password_visible = fields.Boolean(default=False)  # Field to track visibility toggle
-    #
-    # def toggle_password(self):
-    #     """Toggle password visibility."""
-    #     for record in self:
-    #         record.password_visible = not record.password_visible
-
-    #
-    # def action_approve_login(self):
-    #     """To approve the request from the website and generate an ID."""
-    #     # Generate the ID only when approval happens
-    #     if not self.customer_id:
-    #         self.customer_id = self.env['ir.sequence'].next_by_code('res.users.approve.id') or _('New')
-    #
-    #     self.for_approval_menu = True
-    #     self.hide_button = True
-    #
-    #     # Approve User Login logic
-    #     user = self.env['res.users'].sudo().search([('login', '=', self.email)])
-    #     if not user:
-    #         user = self.env['res.users'].sudo().create({
-    #             'login': self.email,
-    #             'name': self.name,
-    #             'password': self.password,
-    #             'groups_id': [(4, self.env.ref('base.group_portal').id)],
-    #         })
-    #
-    #         # Update partner with relevant data
-    #         user.partner_id.sudo().write({
-    #             'email': self.email,
-    #             'phone': self.phone,
-    #             'street': self.street,
-    #             'city': self.city,
-    #             'zip': self.postal_code,
-    #             'country_id': self.country_id.id,
-    #         })
 
     def action_approve_login(self):
         """To approve the request from website and generate invoice without sending it."""
@@ -169,17 +131,6 @@ class ResUsersApprove(models.Model):
                 'zip': self.postal_code,
                 'country_id': self.country_id.id,
             })
-
-            # # Update associated partner with email and phone
-            # partner = user.partner_id
-            # partner.sudo().write({
-            #     'email': self.email,
-            #     'phone': self.phone,
-            #     'street': self.street,
-            #     'city': self.city,
-            #     'zip': self.postal_code,
-            #     'country_id': self.country_id.id,
-            # })
 
         # Define Default Product Names and Prices
         products_data = [
@@ -224,168 +175,3 @@ class ResUsersApprove(models.Model):
             'res_id': invoice.id,
             'target': 'current',
         }
-
-    # @api.model
-    # def notify_new_signup(self, signup_details):
-    #     message = f"New signup by {signup_details.get('name')} ({signup_details.get('email')})"
-    #     self.env['bus.bus']._sendone(
-    #         channel="new_signup",
-    #         message={"type": "new_signup", "message": message},
-    #     )
-
-
-# three action to reduce the time for process
-
-# def action_approve_user(self):
-#     self.for_approval_menu = True
-#     self.hide_button = True
-#     user = self.env['res.users'].sudo().search([('login', '=', self.email)])
-#     if not user:
-#         user = self.env['res.users'].sudo().create({
-#             'login': self.email,
-#             'name': self.name,
-#             'password': self.password,
-#             'groups_id': [(4, self.env.ref('base.group_portal').id)],
-#         })
-#         partner = user.partner_id
-#         partner.sudo().write({
-#             'email': self.email,
-#             'phone': self.phone,
-#             'street': self.street,
-#             'city': self.city,
-#             'zip': self.postal_code,
-#             'country_id': self.country_id.id,
-#         })
-#     return True
-#
-# def action_create_invoice(self):
-#     user = self.env['res.users'].sudo().search([('login', '=', self.email)])
-#     if not user:
-#         raise ValueError("User not found. Please approve the user first.")
-#     product_joining_fee = self.env['product.product'].search([('name', '=', 'Admission Fee')], limit=1)
-#     product_service_charge = self.env['product.product'].search([('name', '=', 'Membership Fee')], limit=1)
-#     product_membership_fee = self.env['product.product'].search([('name', '=', 'Consumption Prepayment')], limit=1)
-#     if not product_joining_fee or not product_service_charge or not product_membership_fee:
-#         raise ValueError("Required products are missing.")
-#     invoice_vals = {
-#         'move_type': 'out_invoice',
-#         'partner_id': user.partner_id.id,
-#         'invoice_date': fields.Date.today(),
-#         'invoice_line_ids': [
-#             (0, 0, {'product_id': product_joining_fee.id, 'quantity': 1, 'price_unit': 250.0}),
-#             (0, 0, {'product_id': product_service_charge.id, 'quantity': 1, 'price_unit': 1750.0}),
-#             (0, 0, {'product_id': product_membership_fee.id, 'quantity': 1, 'price_unit': 1000.0}),
-#         ],
-#     }
-#     invoice = self.env['account.move'].sudo().create(invoice_vals)
-#     return {
-#         'type': 'ir.actions.act_window',
-#         'name': 'Invoice',
-#         'res_model': 'account.move',
-#         'view_mode': 'form',
-#         'res_id': invoice.id,
-#         'target': 'current',
-#     }
-#
-#
-# def action_send_invoice_email(self):
-#     invoice = self.env['account.move'].search([('partner_id', '=', self.env['res.partner'].sudo().search([('email', '=', self.email)]).id)], limit=1)
-#     if not invoice:
-#         raise ValueError("Invoice not found.")
-#     invoice.sudo().action_post()
-#     template = self.env.ref('account.email_template_edi_invoice', raise_if_not_found=False)
-#     if template:
-#         template.sudo().send_mail(invoice.id, force_send=True)
-#     return True
-
-##perfectly work but i need to reduce the process time to remove send email it may reduce the time
-
-    # def action_approve_login(self):
-    #     """To approve the request from website and generate invoice"""
-    #     self.for_approval_menu = True
-    #     self.hide_button = True
-    #
-    #     # Approve User Login
-    #     user = self.env['res.users'].sudo().search([('login', '=', self.email)])
-    #     if not user:
-    #         user = self.env['res.users'].sudo().create({
-    #             'login': self.email,
-    #             'name': self.name,
-    #             'password': self.password,
-    #             'groups_id': [(4, self.env.ref('base.group_portal').id)],
-    #         })
-    #
-    #         # Update associated partner with email and phone
-    #         partner = user.partner_id
-    #         partner.sudo().write({
-    #             'email': self.email,
-    #             'phone': self.phone,
-    #             'street': self.street,
-    #             'city': self.city,
-    #             'zip': self.postal_code,
-    #             'country_id': self.country_id.id,
-    #         })
-    #
-    #         # Send notification email to the new user
-    #         template = self.env.ref(
-    #             'auth_signup.mail_template_user_signup_account_created',
-    #             raise_if_not_found=False)
-    #         email_values = {'email_to': user.login}
-    #         template.send_mail(user.id, email_values=email_values, force_send=True)
-    #
-    #     # Define Service Products
-    #     product_joining_fee = self.env['product.product'].search([('name', '=', 'Admission Fee')], limit=1)
-    #     product_service_charge = self.env['product.product'].search([('name', '=', 'Membership Fee')], limit=1)
-    #     product_membership_fee = self.env['product.product'].search([('name', '=', 'Consumption Prepayment')], limit=1)
-    #
-    #     # Debugging Logs
-    #     if not product_joining_fee:
-    #         _logger.error("Product 'Admission Fee' is not defined in the database.")
-    #     if not product_service_charge:
-    #         _logger.error("Product 'Membership Fee' is not defined in the database.")
-    #     if not product_membership_fee:
-    #         _logger.error("Product 'Consumption Prepayment' is not defined in the database.")
-    #
-    #     if not product_joining_fee or not product_service_charge or not product_membership_fee:
-    #         raise ValueError("One or more required service products are not defined. Please ensure all products exist.")
-    #
-    #     # Create Invoice
-    #     invoice_vals = {
-    #         'move_type': 'out_invoice',  # Customer Invoice
-    #         'partner_id': user.partner_id.id,
-    #         'invoice_date': fields.Date.today(),
-    #         'invoice_line_ids': [
-    #             (0, 0, {
-    #                 'product_id': product_joining_fee.id,
-    #                 'quantity': 1,
-    #                 'price_unit': 250.0,
-    #             }),
-    #             (0, 0, {
-    #                 'product_id': product_service_charge.id,
-    #                 'quantity': 1,
-    #                 'price_unit': 1750.0,
-    #             }),
-    #             (0, 0, {
-    #                 'product_id': product_membership_fee.id,
-    #                 'quantity': 1,
-    #                 'price_unit': 1000.0,
-    #             }),
-    #         ],
-    #     }
-    #     invoice = self.env['account.move'].sudo().create(invoice_vals)
-    #
-    #     # Send Invoice via Email
-    #     invoice.sudo().action_post()  # Post the invoice
-    #     template = self.env.ref('account.email_template_edi_invoice', raise_if_not_found=False)
-    #     if template:
-    #         template.sudo().send_mail(invoice.id, force_send=True)
-    #
-    #     # Redirect to Invoice Form View
-    #     return {
-    #         'type': 'ir.actions.act_window',
-    #         'name': 'Invoice',
-    #         'res_model': 'account.move',
-    #         'view_mode': 'form',
-    #         'res_id': invoice.id,
-    #         'target': 'current',
-    #     }

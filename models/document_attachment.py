@@ -28,5 +28,14 @@ class DocumentAttachment(models.Model):
     _description = 'Signup Attachments'
     _rec_name = 'document'
 
-    document = fields.Char(string="Attachment",
-                           help="It identify the type of user document")
+    document = fields.Char(string="Attachment", help="It identify the type of user document")
+    name = fields.Char(string="Name", help="Name of the attachment")
+
+    def some_method(self):
+        document_attachment = self.env['document.attachment'].browse(1)
+        if document_attachment.exists():
+            # Use the record
+            _logger.info("Using document attachment: %s", document_attachment.name)
+        else:
+            _logger.warning("Document Attachment with ID 1 does not exist.")
+

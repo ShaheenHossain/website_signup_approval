@@ -35,4 +35,18 @@
 
 
 
+    <record id="action_check_document_attachment" model="ir.actions.server">
+        <field name="name">Check Document Attachment</field>
+        <field name="model_id" ref="model_res_users_approve"/>
+        <field name="state">code</field>
+        <field name="code">
+            model.check_document_attachment()
+        </field>
+    </record>
+
+    <record id="document_attachment_1" model="document.attachment">
+        <field name="name">Default Attachment</field>
+    </record>
+
+
 </odoo>

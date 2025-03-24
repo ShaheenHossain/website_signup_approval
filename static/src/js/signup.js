@@ -1,4 +1,4 @@
-/** @odoo-module **//*
+/** @odoo-module **/
 
 
 import publicWidget from "@web/legacy/js/public/public_widget";
@@ -109,10 +109,13 @@ var MySignUpForm = publicWidget.registry.SignUpForm.extend({
 publicWidget.registry.MySignUpForm = MySignUpForm;
 export default MySignUpForm;
 
+
+
+/*
+
 */
+/** @odoo-module **//*
 
-
-/** @odoo-module **/
 import publicWidget from "@web/legacy/js/public/public_widget";
 import { jsonrpc } from "@web/core/network/rpc_service";
 
@@ -239,3 +242,6 @@ var MySignUpForm = publicWidget.registry.SignUpForm.extend({
 
 publicWidget.registry.MySignUpForm = MySignUpForm;
 export default MySignUpForm;
+
+
+*/
