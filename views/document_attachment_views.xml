@@ -44,9 +44,11 @@
         </field>
     </record>
 
+<!--
     <record id="document_attachment_1" model="document.attachment">
         <field name="name">Default Attachment</field>
     </record>
+-->
 
 
 </odoo>
