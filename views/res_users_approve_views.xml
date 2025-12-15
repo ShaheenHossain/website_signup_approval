@@ -1,121 +1,114 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- Create approval request information of user -->
+    <!-- Tree View -->
     <record id="res_user_approve_view_tree" model="ir.ui.view">
         <field name="name">res.users.approve.view.tree</field>
         <field name="model">res.users.approve</field>
-        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <tree>
-                <field name="customer_id" optional="show"/>
-                <field name="name" optional="show"/>
-                <field name="email" optional="show"/>
-<!--                <field name="password" optional="show"/>-->
-                <field name="gender" optional="show"/>
-                <field name="first_name" optional="show"/>
-                <field name="last_name" optional="show"/>
-                <field name="phone" optional="show"/>
+            <tree string="Membership Applications">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="membership_status" widget="badge"
+                       options="{'success': 'active', 'warning': 'pending', 'danger': 'cancelled', 'default': 'draft'}"/>
+                <field name="membership_start_date"/>
+                <field name="membership_end_date"/>
+                <field name="phone"/>
             </tree>
         </field>
     </record>
 
-<!--    Res users approve model form view-->
-<record id="res_user_approve_view_form" model="ir.ui.view">
-    <field name="name">res.users.approve.view.form</field>
-    <field name="model">res.users.approve</field>
-    <field name="mode">primary</field>
-    <field name="arch" type="xml">
-        <form string="Approval Request Form">
-            <header>
-                <button name="action_approve_login" type="object" invisible="hide_button == True" class="oe_highlight" string="Approve Login"/>
-                <button name="action_reject_login" type="object" invisible="hide_button == True" class="oe_highlight" string="Reject Login"/>
 
-<!--                this three button use for separately action to reduce the time to process-->
+
+
+    <!-- Form View -->
+    <record id="res_user_approve_view_form" model="ir.ui.view">
+        <field name="name">res.users.approve.view.form</field>
+        <field name="model">res.users.approve</field>
+        <field name="arch" type="xml">
+            <form string="Membership Application">
+                <header>
 <!--
-                <button name="action_approve_user" string="Approve User" type="object" class="btn-primary"/>
-                <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-secondary"/>
-                <button name="action_send_invoice_email" string="Send Invoice" type="object" class="btn-secondary"/>
+
+                    <button name="update_all_approved_members" type="object"
+                            string="Update All Approved Members"
+                            class="btn-info"
+                            confirm="This will update membership status for all approved members. Continue?"/>
 -->
 
-            </header>
+                    <!-- Simple buttons - visibility will be handled in the model -->
+                    <button name="action_approve_login" type="object"
+                            class="oe_highlight btn-primary" string="Approve"/>
+                    <button name="action_reject_login" type="object"
+                            class="btn-secondary" string="Reject"/>
 
-            <sheet>
-                <widget name="web_ribbon" title="APPROVED"
-                        bg_color="bg-success"
-                        invisible="for_approval_menu == False"/>
+                    <!-- Status bar -->
+                    <field name="membership_status" widget="statusbar"
+                           statusbar_visible="draft,pending,active,suspended,cancelled,expired"/>
+                </header>
 
+                <sheet>
+                    <!-- Approved indicator using simple div with invisible attribute -->
+                    <div class="alert alert-success mb-0" role="alert" invisible="not for_approval_menu">
+                        ✓ Approved on <field name="approved_date" widget="date"/>
+                    </div>
 
-                <group>
-                    <!-- Hidden Fields -->
+                    <!-- Hidden fields -->
                     <field name="for_approval_menu" invisible="1"/>
                     <field name="hide_button" invisible="1"/>
-                </group>
-                <group>
-                    <group string="Personal Details" col="2">
 
-                        <field name="customer_id" readonly="1">
-                            <attribute name="modifiers">{'invisible': [('customer_id', '=', False)]}</attribute>
-                        </field>
-
-<!--                        <field name="customer_id" readonly="1" attrs="{'invisible': [('customer_id', '=', False)]}"/>-->
-<!--                        <field name="customer_id" readonly="1" attrs="{'invisible': [('customer_id', '=', False)]}"/>-->
-<!--                        <field name="customer_id" readonly="1"/>-->
-                        <field name="first_name" readonly="1"/>
-                        <field name="last_name" readonly="1"/>
-                        <field name="name" readonly="1"/>
-                        <field name="company_name" readonly="1"/>
-                        <field name="gender" readonly="1"/>
-                        <field name="birthday" readonly="1"/>
-
-                        <field name="email" readonly="1"/>
-                        <field name="phone" readonly="1"/>
-                        <field name="street" readonly="1"/>
-                        <field name="address_supplement" readonly="1"/>
-                        <field name="province" readonly="1"/>
-                        <field name="city" readonly="1"/>
-                        <field name="postal_code" readonly="1"/>
-                        <field name="country_id" readonly="1"/>
-                    </group>
-                    <group string="Additional Information" col="2">
-                        <field name="recommended_by" readonly="1"/>
-                        <field name="accept_terms" readonly="1"/>
-                        <field name="password" readonly="1"/>
+                    <!-- Membership Information -->
+                    <group string="Membership Information">
+                        <group>
+                            <field name="membership_start_date"/>
+                            <field name="membership_end_date"/>
+                            <field name="membership_renewal_date"/>
+                            <field name="next_invoice_date"/>
+                        </group>
+                        <group>
+                            <field name="membership_status"/>
+                            <field name="cancellation_date"/>
+                            <field name="cancellation_reason"/>
+                            <field name="membership_invoice_id"/>
+                        </group>
                     </group>
 
-<!--
-                    <group string="Additional Information" col="2">
-                        <field name="password" id="password_field"
-                               password="True" readonly="1">
-                            <attribute name="modifiers">{'invisible': [('password_visible', '=', False)]}</attribute>
-                        </field>
-
-                        <button name="toggle_password" type="object"
-                                class="btn btn-sm btn-secondary"
-                                string="👁">
-                            <attribute name="modifiers">{'invisible': [('password', '=', False)]}</attribute>
-                        </button>
+                    <!-- Personal Details -->
+                    <group string="Personal Details">
+                        <group>
+                            <field name="customer_id"/>
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="name"/>
+                            <field name="company_name"/>
+                            <field name="gender"/>
+                            <field name="birthday"/>
+                        </group>
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="street"/>
+                            <field name="address_supplement"/>
+                            <field name="province"/>
+                            <field name="city"/>
+                            <field name="postal_code"/>
+                            <field name="country_id"/>
+                        </group>
                     </group>
--->
 
-<!--
-
-                    <group string="Additional Information" col="2">
-                        &lt;!&ndash; Masked Password Field &ndash;&gt;
-                        <field name="password" password="True" readonly="1" id="password_field"/>
-
-                        &lt;!&ndash; Eye Icon Button with a dummy name &ndash;&gt;
-                        <button type="button"
-                                name="__toggle_password"
-                                class="btn btn-sm btn-secondary"
-                                string="👁"/>
+                    <!-- Additional Information -->
+                    <group string="Additional Information">
+                        <group>
+                            <field name="recommended_by"/>
+                            <field name="accept_terms"/>
+                        </group>
+                        <group>
+                            <field name="password" password="True"/>
+                            <field name="approved_date"/>
+                        </group>
                     </group>
--->
 
+                    <notebook>
 
-
-
-                </group>
-                <notebook>
                     <page string="Documents">
                         <field name="attachment_ids" readonly="1">
                             <tree>
@@ -124,14 +117,65 @@
                                        widget="image"
                                        class="oe_avatar"/>
 
+<!--
+                                <field name="attachments"
+                                       widget="binary"
+                                       filename="name"/>
+-->
+
+<!--                                <field name="attachments"
+                                       filename="filename"/>-->
                             </tree>
+
+<!--
+                            <form>
+                                <field name="attachments" widget="binary" filename="name"/>
+                            </form>
+-->
                         </field>
+
                     </page>
-                </notebook>
-            </sheet>
-        </form>
-    </field>
-</record>
+
+                        <page string="Activity">
+                            <field name="activity_ids"/>
+                        </page>
+
+                        <page string="Invoices">
+                            <field name="membership_invoice_id">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="invoice_date"/>
+                                    <field name="amount_total"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Cancel Wizard View -->
+    <record id="view_membership_cancel_wizard_form" model="ir.ui.view">
+        <field name="name">membership.cancel.wizard.form</field>
+        <field name="model">membership.cancel.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cancel Membership">
+                <sheet>
+                    <group>
+                        <field name="approval_id" readonly="1"/>
+                        <field name="cancellation_date" required="1"/>
+                        <field name="cancellation_reason" required="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_confirm_cancellation" string="Confirm Cancellation" type="object" class="btn-danger"/>
+                        <button string="Cancel" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
     <record id="view_signup_notification_form" model="ir.ui.view">
         <field name="name">signup.notification.form</field>
@@ -159,17 +203,12 @@
         </field>
     </record>
 
-
-
-<!--    Res users approve action-->
+    <!-- Actions -->
     <record id="res_users_approve_action" model="ir.actions.act_window">
         <field name="name">Portal Approval</field>
         <field name="res_model">res.users.approve</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="res_user_approve_view_tree"/>
     </record>
-
 
     <record id="action_signup_notification" model="ir.actions.act_window">
         <field name="name">Signup Notifications</field>
@@ -177,12 +216,9 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-
-
-<!--    Res users approve menu-->
+    <!-- Menus -->
     <menuitem id="res_users_approve_menu" parent="base.menu_users"
               action="res_users_approve_action"/>
-
 
     <menuitem id="menu_signup_notification"
               name="Signup Notifications"

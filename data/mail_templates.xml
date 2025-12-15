@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Membership Renewal Invoice Template -->
+    <record id="mail_template_membership_renewal" model="mail.template">
+        <field name="name">Membership Renewal Invoice</field>
+        <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
+        <field name="subject">Your Membership Renewal Invoice</field>
+        <field name="email_from">${object.company_id.email or ''}</field>
+        <field name="email_to">${object.email}</field>
+        <field name="body_html">
+            <![CDATA[
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2>Membership Renewal Invoice</h2>
+    <p>Dear ${object.name},</p>
+    <p>Your membership is due for renewal in 3 months. Please find attached your invoice for the next year.</p>
+    <p><strong>Renewal Details:</strong></p>
+    <ul>
+        <li>Current membership ends: ${object.membership_end_date}</li>
+        <li>New membership period: ${object.membership_end_date} to ${object.membership_end_date | add_months(12)}</li>
+        <li>Amount due: CHF 1,750.00</li>
+    </ul>
+    <p>Please complete the payment to avoid interruption of your membership benefits.</p>
+    <p>Best regards,<br/>The Membership Team</p>
+</div>
+            ]]>
+        </field>
+    </record>
+
+    <!-- Cancellation Warning Templates -->
+    <record id="mail_template_cancellation_warning_1month" model="mail.template">
+        <field name="name">Cancellation Warning - 1 Month</field>
+        <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
+        <field name="subject">Membership Cancellation - 1 Month Notice</field>
+        <field name="email_from">${object.company_id.email or ''}</field>
+        <field name="email_to">management@yourcompany.com</field>
+        <field name="body_html">
+            <![CDATA[
+<div style="font-family: Arial, sans-serif;">
+    <h3>Membership Cancellation Alert</h3>
+    <p><strong>Action Required:</strong> Membership will be cancelled in 1 month</p>
+    <p><strong>Member:</strong> ${object.name}</p>
+    <p><strong>Email:</strong> ${object.email}</p>
+    <p><strong>Cancellation Date:</strong> ${object.cancellation_date}</p>
+    <p><strong>Reason:</strong> ${object.cancellation_reason or 'No reason provided'}</p>
+    <p>Please prepare to block access and deactivate the account.</p>
+</div>
+            ]]>
+        </field>
+    </record>
+
+    <record id="mail_template_cancellation_warning_7days" model="mail.template">
+        <field name="name">Cancellation Warning - 7 Days</field>
+        <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
+        <field name="subject">URGENT: Membership Cancellation - 7 Days Notice</field>
+        <field name="email_from">${object.company_id.email or ''}</field>
+        <field name="email_to">management@yourcompany.com</field>
+        <field name="body_html">
+            <![CDATA[
+<div style="font-family: Arial, sans-serif;">
+    <h3 style="color: #d9534f;">URGENT: Membership Cancellation Alert</h3>
+    <p><strong>Action Required:</strong> Membership will be cancelled in 7 days</p>
+    <p><strong>Member:</strong> ${object.name}</p>
+    <p><strong>Email:</strong> ${object.email}</p>
+    <p><strong>Cancellation Date:</strong> ${object.cancellation_date}</p>
+    <p>Please block access and prepare to deactivate the account.</p>
+</div>
+            ]]>
+        </field>
+    </record>
+
+    <record id="mail_template_cancellation_warning_1day" model="mail.template">
+        <field name="name">Cancellation Warning - 1 Day</field>
+        <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
+        <field name="subject">IMMEDIATE ACTION: Membership Cancellation Tomorrow</field>
+        <field name="email_from">${object.company_id.email or ''}</field>
+        <field name="email_to">management@yourcompany.com</field>
+        <field name="body_html">
+            <![CDATA[
+<div style="font-family: Arial, sans-serif;">
+    <h3 style="color: #d9534f;">IMMEDIATE ACTION REQUIRED</h3>
+    <p><strong>Membership will be cancelled TOMORROW</strong></p>
+    <p><strong>Member:</strong> ${object.name}</p>
+    <p><strong>Email:</strong> ${object.email}</p>
+    <p><strong>Final Cancellation Date:</strong> ${object.cancellation_date}</p>
+    <p><strong>Immediate Actions:</strong></p>
+    <ol>
+        <li>Block all physical access (keys, cards)</li>
+        <li>Deactivate portal account</li>
+        <li>Remove from mailing lists</li>
+    </ol>
+</div>
+            ]]>
+        </field>
+    </record>
+
+    <!-- Membership Cancelled Confirmation -->
+    <record id="mail_template_membership_cancelled" model="mail.template">
+        <field name="name">Membership Cancelled Confirmation</field>
+        <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
+        <field name="subject">Your Membership Has Been Cancelled</field>
+        <field name="email_from">${object.company_id.email or ''}</field>
+        <field name="email_to">${object.email}</field>
+        <field name="body_html">
+            <![CDATA[
+<div style="font-family: Arial, sans-serif;">
+    <h2>Membership Cancellation Confirmation</h2>
+    <p>Dear ${object.name},</p>
+    <p>This email confirms that your membership has been cancelled.</p>
+    <p><strong>Cancellation Details:</strong></p>
+    <ul>
+        <li>Cancellation Date: ${object.cancellation_date}</li>
+        <li>Effective End Date: ${object.membership_end_date}</li>
+        <li>Reason: ${object.cancellation_reason}</li>
+    </ul>
+    <p>All access will be revoked on the cancellation date.</p>
+    <p>Thank you for being a member.</p>
+    <p>Best regards,<br/>The Membership Team</p>
+</div>
+            ]]>
+        </field>
+    </record>
+</odoo>

@@ -9,7 +9,7 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'website': 'https://www.cybrosys.com',
     'category': 'Website',
-    'depends': ['base', 'website', 'website_sale', 'web'],
+    'depends': ['base', 'website', 'website_sale', 'web', 'mail'],
     'data': [
         'security/website_signup_approval_groups.xml',
         'security/ir.model.access.csv',
@@ -19,11 +19,14 @@
         'views/res_config_settings_views.xml',
         'views/signup_templates.xml',
         'views/document_attachment_views.xml',
-        'views/approval_request_templates.xml'
+        'views/approval_request_templates.xml',
+        'data/cron_jobs.xml',
+        'data/mail_templates.xml'
     ],
     'assets': {
         'web.assets_frontend': [
             'website_signup_approval/static/src/js/signup.js'
+            # 'website_signup_approval/static/src/js/file_validation.js'
             # 'website_signup_approval/static/src/js/new_signup_notification.js'
             # 'website_signup_approval/static/src/scss/custom_login.scss'
         ],

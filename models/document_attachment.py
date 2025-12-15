@@ -1,41 +1,25 @@
 # -*- coding: utf-8 -*-
-#############################################################################
-#
-#    Cybrosys Technologies Pvt. Ltd.
-#
-#    Copyright (C) 2024-TODAY Cybrosys Technologies(<https://www.cybrosys.com>)
-#    Author: Vishnu KP @ Cybrosys, (odoo@cybrosys.com)
-#
-#    You can modify it under the terms of the GNU LESSER
-#    GENERAL PUBLIC LICENSE (LGPL v3), Version 3.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU LESSER GENERAL PUBLIC LICENSE (LGPL v3) for more details.
-#
-#    You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
-#    (LGPL v3) along with this program.
-#    If not, see <http://www.gnu.org/licenses/>.
-#
-#############################################################################
-from odoo import fields, models
 
+from odoo import fields, models, api, _
+from odoo.exceptions import ValidationError
 
 class DocumentAttachment(models.Model):
-    """Store Information of Attachment"""
-    _name = "document.attachment"
-    _description = 'Signup Attachments'
-    _rec_name = 'document'
+    _name = 'document.attachment'
+    _description = 'Document Attachment'
 
-    document = fields.Char(string="Attachment", help="It identify the type of user document")
-    name = fields.Char(string="Name", help="Name of the attachment")
+    document = fields.Binary(
+        string="Attachment",
+        attachment=True,
+        required=True
+    )
+    filename = fields.Char(string="File Name")
 
-    def some_method(self):
-        document_attachment = self.env['document.attachment'].browse(1)
-        if document_attachment.exists():
-            # Use the record
-            _logger.info("Using document attachment: %s", document_attachment.name)
-        else:
-            _logger.warning("Document Attachment with ID 1 does not exist.")
-
+    @api.constrains('document', 'filename')
+    def _check_document_format(self):
+        for rec in self:
+            if rec.document and rec.filename:
+                ext = rec.filename.split('.')[-1].lower()
+                if ext not in ['jpg', 'jpeg', 'png']:
+                    raise ValidationError(
+                        _("Only JPG and PNG images are allowed.")
+                    )

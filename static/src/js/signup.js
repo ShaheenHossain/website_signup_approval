@@ -1,4 +1,5 @@
-/** @odoo-module **/
+/** @odoo-module **//*
+
 
 
 import publicWidget from "@web/legacy/js/public/public_widget";
@@ -108,57 +109,55 @@ var MySignUpForm = publicWidget.registry.SignUpForm.extend({
 
 publicWidget.registry.MySignUpForm = MySignUpForm;
 export default MySignUpForm;
-
-
-
-/*
-
 */
-/** @odoo-module **//*
+
+
+/** @odoo-module **/
 
 import publicWidget from "@web/legacy/js/public/public_widget";
 import { jsonrpc } from "@web/core/network/rpc_service";
 
 var MySignUpForm = publicWidget.registry.SignUpForm.extend({
-    selector: '.oe_signup_form',
 
-    start: function () {
-        this._super.apply(this, arguments);
-        this.$('.get_attach').on('change', this._validateFile.bind(this));
-    },
-
-    _validateFile: function () {
-        var fileInput = this.$('.get_attach')[0];
-        var signupButton = this.$('button[type="submit"]');
-        var warningMessage = this.$('.file-warning-message');
-
-        if (warningMessage.length === 0) {
-            this.$el.append('<p class="file-warning-message text-danger" style="display: none;">Sie sollten ein Bild (JPG oder PNG) hochladen. Andere Formate werden nicht unterstützt.</p>');
-//            this.$el.append('<p class="file-warning-message text-danger" style="display: none;">You should upload an image (JPG or PNG). Other formats are not supported.</p>');
-            warningMessage = this.$('.file-warning-message');
+    //----------------------------------------------------------------------
+    // File Format Validation (ADDED)
+    //----------------------------------------------------------------------
+    _validateFileFormat: function () {
+        var files = this.$('.get_attach')[0]?.files || [];
+        if (files.length === 0) {
+            return true;  // No file → no validation needed
         }
 
-        if (fileInput.files.length > 0) {
-            var file = fileInput.files[0];
-            var allowedFormats = ['image/jpeg', 'image/png'];
+        const allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-            if (!allowedFormats.includes(file.type)) {
-                signupButton.prop('disabled', true);
-                warningMessage.show();
-            } else {
-                signupButton.prop('disabled', false);
-                warningMessage.hide();
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            let ext = file.name.split('.').pop().toLowerCase();
+
+            if (!allowedExtensions.includes(ext)) {
+                alert("Not valid format! Please upload PNG or JPG only.");
+                return false;
             }
-        } else {
-            signupButton.prop('disabled', true);
-            warningMessage.hide();
         }
+
+        return true;
     },
 
+
+
+    //----------------------------------------------------------------------
+    // Submit Handler
+    //----------------------------------------------------------------------
     _onSubmit: function (el) {
-        el.preventDefault();
+        el.preventDefault();  // Prevent default form submission
 
         var self = this;
+
+        // 🔥 Validate File Format BEFORE SUBMIT
+        if (!this._validateFileFormat()) {
+            return;  // Stop submission if invalid file
+        }
+
         var files = this.$('.get_attach')[0]?.files || [];
         var email = this.$('input[name=login]').val();
         var username = this.$('input[name=name]').val();
@@ -180,8 +179,10 @@ var MySignUpForm = publicWidget.registry.SignUpForm.extend({
         var data_array = [];
         var promises = [];
 
+        // Remove previous messages
         this.$('.signup-message').remove();
 
+        // Process file uploads asynchronously
         if (files.length > 0) {
             for (let i = 0; i < files.length; i++) {
                 promises.push(
@@ -198,6 +199,7 @@ var MySignUpForm = publicWidget.registry.SignUpForm.extend({
             }
         }
 
+        // Show loading spinner
         this.$el.addClass('o_submitting');
 
         Promise.all(promises)
@@ -224,15 +226,18 @@ var MySignUpForm = publicWidget.registry.SignUpForm.extend({
             })
             .then((result) => {
                 console.log("Sign-up request sent successfully!", result);
+
                 self.$el.removeClass('o_submitting');
                 self.$el.append('<p class="signup-message text-success">Signup request sent successfully!</p>');
                 $('.signup-message').fadeIn().delay(3000).fadeOut();
+
                 setTimeout(() => {
                     window.location.href = "/web/login";
                 }, 3000);
             })
             .catch((error) => {
                 console.error("Error uploading files or submitting form:", error);
+
                 self.$el.removeClass('o_submitting');
                 self.$el.append('<p class="signup-message text-danger">Signup failed. Please try again.</p>');
                 $('.signup-message').fadeIn().delay(5000).fadeOut();
@@ -243,5 +248,3 @@ var MySignUpForm = publicWidget.registry.SignUpForm.extend({
 publicWidget.registry.MySignUpForm = MySignUpForm;
 export default MySignUpForm;
 
-
-*/
