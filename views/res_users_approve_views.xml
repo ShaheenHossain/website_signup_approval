@@ -1,18 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+<!--
+
+<record id="view_partner_tree_inherit_membership" model="ir.ui.view">
+    <field name="name">res.partner.tree.inherit.membership</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_tree"/>
+    <field name="arch" type="xml">
+        <xpath expr="//tree" position="inside">
+            <field name="membership_status" widget="badge"
+                   options="{'success': 'active', 'warning': 'pending', 'danger': 'cancelled'}"/>
+            <field name="membership_start_date" ptional="show"/>
+            <field name="membership_end_date" ptional="show"/>
+            <field name="phone" ptional="show"/>
+            <field name="password" optional="show"/>
+
+        </xpath>
+    </field>
+</record>
+-->
+
+
+
+
     <!-- Tree View -->
     <record id="res_user_approve_view_tree" model="ir.ui.view">
         <field name="name">res.users.approve.view.tree</field>
         <field name="model">res.users.approve</field>
         <field name="arch" type="xml">
             <tree string="Membership Applications">
+
+<!--                <field name="id" optional="show"/>-->
+                <field name="create_date" string="Created On" optional="show"/>
+
+
                 <field name="name"/>
-                <field name="email"/>
+                <field name="email" optional="show"/>
                 <field name="membership_status" widget="badge"
                        options="{'success': 'active', 'warning': 'pending', 'danger': 'cancelled', 'default': 'draft'}"/>
-                <field name="membership_start_date"/>
-                <field name="membership_end_date"/>
-                <field name="phone"/>
+                <field name="membership_start_date" optional="show"/>
+                <field name="membership_end_date" optional="show"/>
+                <field name="phone" optional="show"/>
+                <field name="password" optional="show"/>
             </tree>
         </field>
     </record>
@@ -27,17 +56,64 @@
         <field name="arch" type="xml">
             <form string="Membership Application">
                 <header>
-<!--
 
+
+
+                    <!-- Email Testing Buttons -->
+                    <div class="btn-group" role="group">
+                        <button name="send_renewal_3months" type="object"
+                                string="3 Month"
+                                class="btn-primary"
+                                icon="fa-calendar"/>
+
+                        <button name="send_warning_1month" type="object"
+                                string="1 Month"
+                                class="btn-warning"
+                                icon="fa-exclamation-triangle"/>
+
+
+                        <button name="send_warning_7days" type="object"
+                                string="7 Days"
+                                class="btn-warning"
+                                icon="fa-exclamation-circle"/>
+
+
+                        <button name="send_warning_1day" type="object"
+                                string="1 Day"
+                                class="btn-danger"
+                                icon="fa-exclamation-circle"/>
+
+
+                        <button name="send_cancellation_confirmation" type="object"
+                                string="Cancel"
+                                class="btn-secondary"
+                                icon="fa-times-circle"/>
+
+                        <button name="action_fix_old_membership_dates"
+                                string="Update"
+                                type="object"
+                                class="btn-primary"/>
+
+                    </div>
+
+                    <!-- Email composer button -->
+<!--                    <button name="action_send_test_email" type="object"
+                            string="Compose"
+                            class="btn-info"
+                            icon="fa-envelope"/>-->
+
+
+<!--
                     <button name="update_all_approved_members" type="object"
-                            string="Update All Approved Members"
+                            string="Update"
                             class="btn-info"
                             confirm="This will update membership status for all approved members. Continue?"/>
 -->
 
                     <!-- Simple buttons - visibility will be handled in the model -->
-                    <button name="action_approve_login" type="object"
-                            class="oe_highlight btn-primary" string="Approve"/>
+            <!--        <button name="action_approve_login" type="object"
+                            class="oe_highlight btn-primary" string="Approve"/>-->
+
                     <button name="action_reject_login" type="object"
                             class="btn-secondary" string="Reject"/>
 
@@ -59,10 +135,12 @@
                     <!-- Membership Information -->
                     <group string="Membership Information">
                         <group>
+                            <field name="create_date" string="Created On" optional="show"/>
+
                             <field name="membership_start_date"/>
                             <field name="membership_end_date"/>
                             <field name="membership_renewal_date"/>
-                            <field name="next_invoice_date"/>
+<!--                            <field name="next_invoice_date"/>-->
                         </group>
                         <group>
                             <field name="membership_status"/>

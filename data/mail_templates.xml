@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Membership Renewal Invoice Template -->
+    <!--
+    &lt;!&ndash; Membership Renewal Invoice Template &ndash;&gt;
     <record id="mail_template_membership_renewal" model="mail.template">
         <field name="name">Membership Renewal Invoice</field>
         <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
@@ -26,7 +27,7 @@
         </field>
     </record>
 
-    <!-- Cancellation Warning Templates -->
+    &lt;!&ndash; Cancellation Warning Templates &ndash;&gt;
     <record id="mail_template_cancellation_warning_1month" model="mail.template">
         <field name="name">Cancellation Warning - 1 Month</field>
         <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
@@ -93,7 +94,7 @@
         </field>
     </record>
 
-    <!-- Membership Cancelled Confirmation -->
+    &lt;!&ndash; Membership Cancelled Confirmation &ndash;&gt;
     <record id="mail_template_membership_cancelled" model="mail.template">
         <field name="name">Membership Cancelled Confirmation</field>
         <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
@@ -119,4 +120,182 @@
             ]]>
         </field>
     </record>
+
+    -->
+
+
+    <record id="mail_template_warning_3months" model="mail.template">
+        <field name="name">Membership Warning - 3 Months</field>
+        <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
+        <field name="subject">Your Membership Expires in 3 Months</field>
+        <field name="email_to">${object.email}</field>
+        <field name="email_from">Timeout Betriebs AG</field>
+
+
+        <field name="body_html">
+            <![CDATA[
+            <div style="font-family: Arial; max-width:600px;">
+                <h2>Membership Expiry Notice</h2>
+
+                <p> Dear <strong><t t-esc="object.name"/></strong>, </p>
+
+                <p> Your membership will expire on <strong><t t-esc="object.membership_end_date"/></strong>. </p>
+
+                <p>Please renew early to avoid interruption.</p>
+
+            <!--    <p style="margin-top:20px;">
+                    <a href="/membership/renew" style="background:#28a745;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;">
+                        Renew Membership
+                    </a>
+                    &nbsp;
+                    <a href="/membership/cancel" style="background:#dc3545;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;">
+                        Cancel Membership
+                    </a>
+                </p>
+
+                <p style="margin-top:15px;">
+                    <a href="/contactus">Contact Support</a>
+                </p>
+                -->
+
+                 <p>If this was a mistake, contact support immediately.</p>
+                <a href="/contactus">Contact Support</a>
+
+
+            </div>
+        ]]>
+        </field>
+    </record>
+
+
+
+
+
+    <record id="mail_template_warning_1month" model="mail.template">
+    <field name="name">Membership Warning - 1 Month</field>
+    <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
+    <field name="subject">Membership Expiring in 1 Month</field>
+    <field name="email_to">${object.email}</field>
+<!--    <field name="email_from">${object.company_id.email or ''}</field>-->
+        <field name="email_from">Timeout Betriebs AG</field>
+
+
+    <field name="body_html">
+        <![CDATA[
+            <div style="font-family: Arial;">
+                <h2 style="color:#ff9800;">Important Reminder</h2>
+
+    <p> Dear <strong><t t-esc="object.name"/></strong>, </p>
+
+    <p> Your membership will expire on <strong><t t-esc="object.membership_end_date"/></strong>. </p>
+
+
+<!--
+
+                <p>
+                    <a href="/membership/renew" style="background:#28a745;color:white;padding:10px 18px;border-radius:5px;text-decoration:none;">
+                        Renew Now
+                    </a>
+                </p>
+
+                <p>If not renewed, cancellation process will start.</p>
+-->
+
+                <p>If this was a mistake, contact support immediately.</p>
+                <a href="/contactus">Contact Support</a>
+
+
+            </div>
+        ]]>
+    </field>
+</record>
+
+
+
+    <record id="mail_template_warning_7days" model="mail.template">
+        <field name="name">Membership Warning - 7 Days</field>
+        <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
+        <field name="subject">URGENT: Membership Expiring in 7 Days</field>
+        <field name="email_to">${object.email}</field>
+                <field name="email_from">Timeout Betriebs AG</field>
+
+<!--        <field name="email_from">${object.company_id.email or ''}</field>-->
+        <field name="body_html">
+            <![CDATA[
+                <div style="font-family: Arial;">
+                    <h2 style="color:red;">Important Reminder</h2>
+                    <p> Dear <strong><t t-esc="object.name"/></strong>, </p>
+                    <p> Your membership will expire on <strong><t t-esc="object.membership_end_date"/></strong>. </p>
+
+<!--                    <p>
+                        <a href="/membership/renew" style="background:#dc3545;color:#fff;padding:10px 20px;border-radius:5px;text-decoration:none;">
+                            Renew Immediately
+                        </a>
+                    </p>-->
+
+
+                <p>If this was a mistake, contact support immediately.</p>
+                <a href="/contactus">Contact Support</a>
+
+
+                </div>
+        ]]>
+        </field>
+    </record>
+
+
+
+    <record id="mail_template_warning_1day" model="mail.template">
+        <field name="name">Membership Warning - 1 Day</field>
+        <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
+        <field name="subject">URGENT: Membership Expiring in 1 Day</field>
+        <field name="email_to">${object.email}</field>
+                <field name="email_from">Timeout Betriebs AG</field>
+
+<!--        <field name="email_from">${object.company_id.email or ''}</field>-->
+        <field name="body_html">
+            <![CDATA[
+                <div style="font-family: Arial;">
+                  <h2 style="color:red;">Final Reminder</h2>
+
+                    <p> Dear <strong><t t-esc="object.name"/></strong>, </p>
+
+    <p> Your membership will expire on <strong><t t-esc="object.membership_end_date"/></strong>. </p>
+
+<!--                    <p>
+                        <a href="/membership/renew" style="background:#dc3545;color:#fff;padding:10px 20px;border-radius:5px;text-decoration:none;">
+                            Renew Immediately
+                        </a>
+                    </p>-->
+
+                <p>If this was a mistake, contact support immediately.</p>
+                <a href="/contactus">Contact Support</a>
+
+                </div>
+        ]]>
+        </field>
+    </record>
+
+
+
+    <record id="mail_template_membership_cancelled" model="mail.template">
+        <field name="name">Membership Cancelled</field>
+        <field name="model_id" ref="website_signup_approval.model_res_users_approve"/>
+        <field name="subject">Membership Cancelled Confirmation</field>
+        <field name="email_to">${object.email}</field>
+        <field name="email_from">Timeout Betriebs AG</field>
+        <field name="body_html">
+            <![CDATA[
+            <div style="font-family: Arial;">
+                <h2>Membership Cancelled</h2>
+               <p> Dear <strong><t t-esc="object.name"/></strong>, </p>
+                <p>Your membership has been cancelled effective from:</p>
+                <p><strong><t t-esc="object.membership_end_date"/></strong>. </p>
+                <p>If this was a mistake, contact support immediately.</p>
+                <a href="/contactus">Contact Support</a>
+            </div>
+        ]]>
+        </field>
+    </record>
+
 </odoo>

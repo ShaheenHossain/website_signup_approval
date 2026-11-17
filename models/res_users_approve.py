@@ -1,182 +1,3 @@
-# from email.policy import default
-#
-# from odoo import fields, models, api, _
-# from odoo.exceptions import ValidationError
-#
-# class ResUsersApprove(models.Model):
-#     """Store Signup Information of Users from Website"""
-#     _name = 'res.users.approve'
-#     _description = "Approval Request Details"
-#
-#     # name = fields.Char(help="Name of the user", string='Name')
-#
-#     # customer_id = fields.Char(string="Member ID", readonly=True, copy=False)
-#
-#     def check_document_attachment(self):
-#         """Check if document.attachment with ID 1 exists."""
-#         document_attachment = self.env['document.attachment'].browse(1)
-#         if document_attachment.exists():
-#             _logger.info("Using document attachment: %s", document_attachment.name)
-#         else:
-#             _logger.warning("Document Attachment with ID 1 does not exist.")
-#
-#     customer_id = fields.Many2one('res.partner', string="Customer")
-#
-#     first_name = fields.Char(string='First Name')
-#     last_name = fields.Char(string='Last Name')
-#     name = fields.Char(string='Full Name', compute='_compute_full_name', store=True)
-#
-#     company_name = fields.Char(help="Company", string="Company")
-#     email = fields.Char(help="Email of the user", string="Email")
-#     password = fields.Char(help="Password of the user", string="Password")
-#
-#     gender = fields.Selection([
-#         ('female', 'Female'),
-#         ('male', 'Male'),
-#         ('other', 'Other')
-#     ], string='Gender', default='male')
-#
-#     birthday = fields.Date(string='Birthday')
-#     street = fields.Char(string='Street and House Number')
-#     address_supplement = fields.Char(string='Address Supplement')
-#     province = fields.Char(string='Canton / Province / Region')
-#     city = fields.Char(string='City')
-#     postal_code = fields.Char(string='Postal Code')
-#     country_id = fields.Many2one(
-#         'res.country',
-#         string='Country',
-#         default=lambda self: self.env.ref('base.ch'))
-#
-#     phone = fields.Char(string='Phone Number')
-#     recommended_by = fields.Char(string='Recommended By')
-#     # recommended_by = fields.Char(string='Recommended By', required=False)
-#     accept_terms = fields.Boolean(string='Accept Terms and Conditions')
-#
-#     for_approval_menu = fields.Boolean(string='For Approval Menu',
-#                                        default=False,
-#                                        help="Check the request is approved")
-#     approved_date = fields.Datetime(string='Approved Date', copy=False,
-#                                     help="Approval date of signup request")
-#     attachment_ids = fields.One2many('user.approval.window',
-#                                      'approval_id',
-#                                      string='Attachments',
-#                                      help="Store uploaded document")
-#     hide_button = fields.Boolean(string='For hide button',
-#                                  default=False,
-#                                  help="Check the button is used or not")
-#
-#     # image = fields.Image(string='Profile Image')
-#
-#     recommended_by_email = fields.Char(string='Recommended By (Email)')
-#     recommended_by_phone = fields.Char(string='Recommended By (Phone)')
-#
-#     notification_sent = fields.Boolean(string='Notification Sent', default=False)
-#
-#     @api.constrains('recommended_by_email', 'recommended_by_phone')
-#     def _check_recommendation(self):
-#         for rec in self:
-#             if not rec.recommended_by_email and not rec.recommended_by_phone:
-#                 raise ValidationError(_("Please provide either an email or phone number for the recommender."))
-#
-#             if rec.recommended_by_email:
-#                 user = self.env['res.users'].search([('email', '=', rec.recommended_by_email)], limit=1)
-#                 if not user:
-#                     raise ValidationError(
-#                         _("The provided email does not match any existing user. Please verify the email."))
-#
-#             if rec.recommended_by_phone:
-#                 user = self.env['res.users'].search([('phone', '=', rec.recommended_by_phone)], limit=1)
-#                 if not user:
-#                     raise ValidationError(
-#                         _("The provided phone number does not match any existing user. Please verify the phone number."))
-#
-#     def _compute_full_name(self):
-#         for rec in self:
-#             rec.name = f"{rec.first_name or ''} {rec.last_name or ''}".strip()
-#
-#     def action_reject_login(self):
-#         """To reject the request from website"""
-#         self.for_approval_menu = False
-#         self.hide_button = True
-#         user = self.env['res.users'].sudo().search([('login', '=', self.email)])
-#         if user:
-#             user.unlink()
-#
-#     def action_approve_login(self):
-#         """To approve the request from website and generate invoice without sending it."""
-#         self.for_approval_menu = True
-#         self.hide_button = True
-#
-#         # Approve User Login
-#         user = self.env['res.users'].sudo().search([('login', '=', self.email)])
-#         if not user:
-#             user = self.env['res.users'].sudo().create({
-#                 'login': self.email,
-#                 'name': self.name,
-#                 'password': self.password,
-#                 'groups_id': [(4, self.env.ref('base.group_portal').id)],
-#             })
-#
-#         # Fetch the first attachment (assuming it's the profile image)
-#         attachment = self.attachment_ids[:1]  # Get the first attachment
-#
-#         if attachment:
-#             # Set the attachment as the user's profile image
-#             user.partner_id.sudo().write({
-#                 'image_1920': attachment.attachments,  # Set as profile image
-#                 'email': self.email,
-#                 'phone': self.phone,
-#                 'street': self.street,
-#                 'city': self.city,
-#                 'zip': self.postal_code,
-#                 'country_id': self.country_id.id,
-#             })
-#
-#         # Define Default Product Names and Prices
-#         products_data = [
-#             {'name': 'Admission Fee', 'price': 250.0},
-#             {'name': 'Membership Fee', 'price': 1750.0},
-#             {'name': 'Consumption Prepayment', 'price': 1000.0},
-#         ]
-#
-#         invoice_lines = []
-#         for product_data in products_data:
-#             product = self.env['product.product'].search([('name', '=', product_data['name'])], limit=1)
-#             if not product:
-#                 # Create product dynamically if it doesn't exist
-#                 product = self.env['product.product'].sudo().create({
-#                     'name': product_data['name'],
-#                     'type': 'service',
-#                     'list_price': product_data['price'],  # Set default price
-#                 })
-#
-#             # Prepare invoice line
-#             invoice_lines.append((0, 0, {
-#                 'product_id': product.id,
-#                 'quantity': 1,
-#                 'price_unit': product_data['price'],  # Use dynamic price
-#             }))
-#
-#         # Create Invoice without posting or sending
-#         invoice_vals = {
-#             'move_type': 'out_invoice',  # Customer Invoice
-#             'partner_id': user.partner_id.id,
-#             'invoice_date': fields.Date.today(),
-#             'invoice_line_ids': invoice_lines,
-#         }
-#         invoice = self.env['account.move'].sudo().create(invoice_vals)
-#
-#         # Redirect to Invoice Form View
-#         return {
-#             'type': 'ir.actions.act_window',
-#             'name': 'Invoice',
-#             'res_model': 'account.move',
-#             'view_mode': 'form',
-#             'res_id': invoice.id,
-#             'target': 'current',
-#         }
-
-
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api, _
@@ -191,6 +12,101 @@ class ResUsersApprove(models.Model):
     _name = 'res.users.approve'
     _description = "Approval Request Details"
     _inherit = ['mail.thread', 'mail.activity.mixin']
+
+
+
+    def send_expiry_reminders(self):
+        """Automatically send email reminders before membership expires"""
+        today = fields.Date.today()
+
+        reminder_map = {
+            3: 'website_signup_approval.mail_template_warning_3months',
+            1: 'website_signup_approval.mail_template_warning_1month',
+            7: 'website_signup_approval.mail_template_warning_7days',
+            0: 'website_signup_approval.mail_template_warning_1day',
+        }
+
+        for key, template_xmlid in reminder_map.items():
+            # Calculate target date
+            if key >= 1:  # months
+                target_date = today + relativedelta(months=key)
+            else:  # days
+                target_date = today + timedelta(days=key)
+
+            memberships = self.search([
+                ('membership_status', '=', 'active'),
+                ('membership_end_date', '=', target_date)
+            ])
+
+            template = self.env.ref(template_xmlid, raise_if_not_found=False)
+            if not template:
+                _logger.warning("Email template %s not found", template_xmlid)
+                continue
+
+            admin_users = self.env['res.users'].search([('share', '=', False), ('active', '=', True)])
+
+            for rec in memberships:
+                # Send email to customer
+                template.send_mail(rec.id, force_send=True, raise_exception=False)
+
+                # Send copy to all admin users
+                for admin in admin_users:
+                    template.with_context(force_email=True).send_mail(
+                        rec.id, email_values={'email_to': admin.email}, raise_exception=False
+                    )
+
+                _logger.info("Sent expiry reminder for %s using template %s", rec.name, template_xmlid)
+
+    def send_renewal_3months(self):
+        return self._open_email_template(
+            'website_signup_approval.mail_template_warning_3months'
+        )
+
+    def send_warning_1month(self):
+        return self._open_email_template(
+            'website_signup_approval.mail_template_warning_1month'
+        )
+
+    def send_warning_7days(self):
+        return self._open_email_template(
+            'website_signup_approval.mail_template_warning_7days'
+        )
+
+    def send_warning_1day(self):
+        return self._open_email_template(
+            'website_signup_approval.mail_template_warning_1day'
+        )
+
+
+    def send_cancellation_confirmation(self):
+        return self._open_email_template(
+            'website_signup_approval.mail_template_membership_cancelled'
+        )
+
+    def _open_email_template(self, template_xmlid):
+        self.ensure_one()
+
+        template = self.env.ref(template_xmlid, raise_if_not_found=False)
+        if not template:
+            raise ValidationError(_("Email template not found."))
+
+        partner_ids = []
+        if self.customer_id:
+            partner_ids = [self.customer_id.id]
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'mail.compose.message',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_model': 'res.users.approve',
+                'default_res_ids': [self.id],  # ✅ MUST be list
+                'default_use_template': True,
+                'default_template_id': template.id,
+                'default_partner_ids': partner_ids,
+            }
+        }
 
 
     def _get_can_approve(self):
@@ -248,41 +164,6 @@ class ResUsersApprove(models.Model):
         store=False
     )
 
-    #
-    #
-    # @api.model
-    # def _update_existing_members(self):
-    #     """Update existing approved members with default membership data"""
-    #     try:
-    #         # Find all existing approved members
-    #         approved_members = self.search([
-    #             ('for_approval_menu', '=', True),
-    #             ('membership_status', '=', 'draft'),  # Only update draft status
-    #         ])
-    #
-    #         if approved_members:
-    #             default_start_date = date(2025, 2, 11)
-    #             default_end_date = date(2026, 2, 11)
-    #
-    #             for member in approved_members:
-    #                 member.write({
-    #                     'membership_status': 'active',
-    #                     'membership_start_date': default_start_date,
-    #                     'membership_end_date': default_end_date,
-    #                 })
-    #
-    #             _logger.info(f"Updated {len(approved_members)} existing approved members")
-    #     except Exception as e:
-    #         _logger.error(f"Error updating existing members: {e}")
-    #
-    # # Call this method when module is installed/updated
-    # @api.model
-    # def init(self):
-    #     """Initialize module - update existing records"""
-    #     super().init()
-    #     self._update_existing_members()
-
-
 
     # Basic fields
     customer_id = fields.Many2one('res.partner', string="Customer")
@@ -292,6 +173,7 @@ class ResUsersApprove(models.Model):
     company_name = fields.Char(help="Company", string="Company")
     email = fields.Char(help="Email of the user", string="Email")
     password = fields.Char(help="Password of the user", string="Password")
+
 
     # Membership fields
     membership_start_date = fields.Date(
@@ -310,14 +192,71 @@ class ResUsersApprove(models.Model):
         store=True,
         help="Date when next invoice should be sent"
     )
+
+    @api.onchange('approved_date')
+    def _onchange_approved_date(self):
+        for rec in self:
+            if rec.approved_date:
+                start_date = rec.approved_date.date()
+                rec.membership_start_date = start_date
+                rec.membership_end_date = start_date + relativedelta(years=1)
+
+
+
+    def action_fix_old_membership_dates(self):
+        records = self.search([
+            ('approved_date', '=', False),
+            ('create_date', '!=', False)
+        ])
+
+        for rec in records:
+            approved = rec.create_date
+
+            if approved:
+                start_date = approved.date()
+
+                rec.write({
+                    'approved_date': approved,
+                    'membership_start_date': start_date,
+                    'membership_end_date': start_date + relativedelta(years=1),
+                })
+
+
+
+
+    @api.onchange('membership_start_date')
+    def _onchange_membership_start_date(self):
+        for rec in self:
+            if rec.membership_start_date:
+                end_date = rec.membership_start_date + relativedelta(years=1)
+
+                rec.membership_end_date = end_date
+                rec.membership_renewal_date = end_date
+            else:
+                rec.membership_end_date = False
+                rec.membership_renewal_date = False
+
+    #
+    # membership_status = fields.Selection([
+    #     ('draft', 'Draft'),
+    #     ('pending', 'Pending Approval'),
+    #     ('active', 'Active'),
+    #     ('suspended', 'Suspended'),
+    #     ('cancelled', 'Cancelled'),
+    #     ('expired', 'Expired')
+    # ], string='Membership Status', default='draft', tracking=True)
+
+
     membership_status = fields.Selection([
         ('draft', 'Draft'),
         ('pending', 'Pending Approval'),
         ('active', 'Active'),
         ('suspended', 'Suspended'),
         ('cancelled', 'Cancelled'),
-        ('expired', 'Expired')
-    ], string='Membership Status', default='draft', tracking=True)
+        ('expired', 'Expired'),
+    ], compute='_compute_membership_status_from_invoice', store=True)
+
+
 
     # Cancellation fields
     cancellation_date = fields.Date(string='Cancellation Date')
@@ -328,11 +267,20 @@ class ResUsersApprove(models.Model):
         'account.move',
         string='Current Membership Invoice'
     )
-    next_invoice_date = fields.Date(
-        string='Next Invoice Date',
-        compute='_compute_next_invoice_date',
-        store=True
-    )
+
+    # next_invoice_date = fields.Date(
+    #     string='Next Invoice Date',
+    #     compute='_compute_next_invoice_date',
+    #     store=True
+    # )
+    #
+    # next_invoice_date = fields.Date(
+    #     string='Next Invoice Date',
+    #     related='membership_renewal_date',
+    #     store=True,
+    #     readonly=True
+    # )
+
 
     # Other existing fields
     gender = fields.Selection([
@@ -366,6 +314,7 @@ class ResUsersApprove(models.Model):
         copy=False,
         help="Approval date of signup request"
     )
+
     attachment_ids = fields.One2many(
         'user.approval.window',
         'approval_id',
@@ -397,15 +346,15 @@ class ResUsersApprove(models.Model):
             else:
                 rec.membership_renewal_date = False
 
-    @api.depends('membership_end_date')
-    def _compute_next_invoice_date(self):
-        for rec in self:
-            if rec.membership_end_date:
-                # 3 months before end date
-                next_invoice = rec.membership_end_date - relativedelta(months=3)
-                rec.next_invoice_date = next_invoice
-            else:
-                rec.next_invoice_date = False
+    # @api.depends('membership_end_date')
+    # def _compute_next_invoice_date(self):
+    #     for rec in self:
+    #         if rec.membership_end_date:
+    #             # 3 months before end date
+    #             next_invoice = rec.membership_end_date - relativedelta(months=3)
+    #             rec.next_invoice_date = next_invoice
+    #         else:
+    #             rec.next_invoice_date = False
 
     def action_reject_login(self):
         """To reject the request from website"""
@@ -630,6 +579,54 @@ class ResUsersApprove(models.Model):
 
             _logger.info(f"Created renewal invoice for {rec.name}")
 
+
+    @api.depends(
+        'membership_invoice_id.state',
+        'membership_invoice_id.payment_state'
+    )
+    def _compute_membership_status_from_invoice(self):
+        for rec in self:
+
+            invoice = rec.membership_invoice_id
+
+            if not invoice:
+                rec.membership_status = 'draft'
+                continue
+
+            # ✅ Logger is good – keep it
+            _logger.info(
+                "Checking invoice %s | state=%s | payment_state=%s",
+                invoice.id,
+                invoice.state,
+                invoice.payment_state
+            )
+
+            # Draft invoice → Pending
+            if invoice.state == 'draft':
+                rec.membership_status = 'pending'
+                continue
+
+            # ✅ Active if IN PAYMENT or PAID
+            if invoice.payment_state in ('in_payment', 'paid'):
+                rec.membership_status = 'active'
+
+                # Set membership dates only first time
+                if not rec.membership_start_date:
+                    start_date = invoice.invoice_date or fields.Date.today()
+                    rec.membership_start_date = start_date
+                    rec.membership_end_date = start_date + relativedelta(years=1)
+
+                continue
+
+            # Posted but NOT paid
+            if invoice.state == 'posted' and invoice.payment_state == 'not_paid':
+                rec.membership_status = 'pending'
+                continue
+
+            # Fallback safety
+            rec.membership_status = 'pending'
+
+
     @api.model
     def check_membership_renewals(self):
         """Cron job to check for membership renewals"""
@@ -712,4 +709,5 @@ class ResUsersApprove(models.Model):
                 if not user:
                     raise ValidationError(
                         _("The provided phone number does not match any existing user. Please verify the phone number."))
+
 
